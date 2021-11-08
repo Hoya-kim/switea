@@ -1,4 +1,18 @@
 @use './../utils' as *;
+
+// 시맨틱 태그 iE 맞춤 ---------------------------------------------------------------/
+header,
+footer,
+main,
+section,
+article,
+aside,
+nav,
+figure,
+figcaption {
+  display: block;
+}
+
 // 기본 스타일 -------------------------------------------------------------------- /
 // 루트 요소의 기본 글자 크기 및 가로 스크바 제거 ----------------------------------------------- /
 html {
@@ -13,7 +27,6 @@ body::after,
 body *,
 body *::before,
 body *::after {
-  font-family: 'IBM Plex Sans KR', sans-serif;
   box-sizing: border-box;
 }
 
@@ -28,8 +41,9 @@ body *::after {
 // }
 
 // 본문 기본 폰트, 글자 크기, 굵기, 배경 색상 지정 --------------------------------------------- /
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Roboto:wght@300;400;500;700;900&display=swap');
 body {
-  font-family: 'Spoqa Han Sans Neo', 'Sans-serif';
+  font-family: 'Noto Sans KR', 'Roboto', sans-serif;
   font-size: inherit;
   background-color: $white;
 }
@@ -55,6 +69,7 @@ ol {
 // 이미지에 발생하는 갭 제거 ------------------------------------------------------------ /
 img {
   vertical-align: middle;
+  max-width: 100%;
 }
 
 // 링크 요소의 밑줄 및 글자 색상 재 정의 ---------------------------------------------------- /
@@ -78,10 +93,31 @@ fieldset {
 
 // legend 요소 숨김 콘텐츠 처리 ------------------------------------------------------- /
 legend {
-  // @include a11yHidden;
+  @include a11yHidden;
+}
+
+// form 요소 스타일 설정
+input::-ms-clear,
+input::-ms-reveal {
+  display: none;
+}
+
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration {
+  display: none;
+}
+
+input,
+button,
+textarea {
+  appearance: none;
 }
 
 // 버튼 마우스 스타일 설정 ------------------------------------------------------------- /
 button {
   cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
 }
