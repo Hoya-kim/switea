@@ -1,0 +1,33 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+body {
+  // @TODO : Change to color variable
+  background-color: #ccc;
+}
+
+.container {
+  max-width: 768px;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: white;
+  padding: 94px 18px 89px;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 768px;
+}
+
+.navigation {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 768px;
+}
