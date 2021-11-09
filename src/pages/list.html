@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <!-- @TODO : a11y-hidden -->
+      <h1 class="logo">
+        <a href="#">Switea</a>
+      </h1>
+      <header class="header">
+        <h2 class="title">스터디 목록 보기</h2>
+        <!-- @TODO : padding trick -->
+        <button type="button" class="back">뒤로 가기</button>
+      </header>
+      <!-- @TODO : Implement to web component -->
+      <nav class="navigation">
+        <ul>
+          <li><a href="#">홈</a></li>
+          <li><a href="#">목록보기</a></li>
+          <li><a href="#">지도</a></li>
+          <li><a href="#">모집하기</a></li>
+          <li><a href="#">마이페이지</a></li>
+        </ul>
+      </nav>
+      <main class="list-view">
+        <!-- Each of Page -->
+        <form action="#">
+          <fieldset>
+            <legend>검색 폼</legend>
+            <div class="search">
+              <div class="search__input-container">
+                <input
+                  type="search"
+                  aria-label="검색어"
+                  name="keyword"
+                  aria-required="true"
+                />
+              </div>
+              <div class="search__toggle-button-container">
+                <input
+                  type="radio"
+                  id="search-type-study"
+                  name="search-type"
+                  value="스터디"
+                  checked
+                />
+                <label for="search-type-study">스터디</label>
+                <input
+                  type="radio"
+                  id="search-type-place"
+                  name="search-type"
+                  value="장소"
+                />
+                <label for="search-type-place">장소</label>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+        <div class="filter">
+          <button class="filter__toggle-button"></button>
+          <div class="filter__container">필터 컴포넌트 작성 부분</div>
+        </div>
+        <ul class="study-lists">
+          <!-- 카드 동적 생성 -->
+          <li class="study-lists__card">
+            <div class="study-lists__profile">
+              <div class="study-lists__profile-image"></div>
+              <p class="study-lists__profile-name">강단이</p>
+            </div>
+            <p class="study-lists__subject">자바스크립트 스터디 모집해요!</p>
+            <ul class="study-lists__tags">
+              <li class="study-lists__tag">#홍대</li>
+              <li class="study-lists__tag">#자바스크립트</li>
+              <li class="study-lists__tag">#코딩</li>
+            </ul>
+          </li>
+          <li class="study-lists__card">
+            <div class="study-lists__profile">
+              <div class="study-lists__profile-image"></div>
+              <p class="study-lists__profile-name">민횽이</p>
+            </div>
+            <p class="study-lists__subject">자바스크립트 스터디 모집해요!</p>
+            <ul class="study-lists__tags">
+              <li class="study-lists__tag">#강남</li>
+              <li class="study-lists__tag">#파이썬</li>
+              <li class="study-lists__tag">#코딩</li>
+            </ul>
+          </li>
+        </ul>
+      </main>
+    </div>
+  </body>
+</html>
