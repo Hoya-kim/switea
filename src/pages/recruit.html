@@ -62,16 +62,17 @@
                 <li class="tag">#코딩</li>
               </ul>
             </div>
-            <div class="search">
-              <div class="search__input-container">
-                <label for="searchInput">검색</label>
-                <input
-                  type="search"
-                  id="searchInput"
-                  name="keyword"
-                  aria-required="true"
-                />
-              </div>
+            <!-- <div class="search"> -->
+            <div class="input-container">
+              <label for="location">스터디 장소</label>
+              <input
+                type="search"
+                id="location"
+                name="location"
+                aria-required="true"
+                class="location input--border"
+              />
+              <!-- </div> -->
             </div>
             <div class="input-container">
               <label for="date">일자</label>
@@ -112,7 +113,9 @@
                 class="input--border"
               ></textarea>
             </div>
-            <button class="recruit__submit button-submit">등록하기</button>
+            <button class="recruit__submit button-submit" disabled>
+              등록하기
+            </button>
           </fieldset>
         </form>
       </main>

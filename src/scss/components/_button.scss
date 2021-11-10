@@ -24,3 +24,19 @@
     color: $primary;
   }
 }
+
+.button-submit {
+  width: 100%;
+  padding: 17px 0;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: $white;
+  border: none;
+  border-radius: 5px;
+  background-color: $button-active;
+
+  &:disabled {
+    background-color: $button-inactive;
+  }
+}

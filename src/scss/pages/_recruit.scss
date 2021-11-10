@@ -1,2 +1,30 @@
 @use '../base/' as *;
 @use '../utils/' as *;
+
+.recruit-container {
+  .toggle-button-container {
+    display: inline-flex;
+
+    label {
+      margin-bottom: 0;
+      padding: 0 11px;
+      font-size: 16px;
+    }
+  }
+
+  .tags {
+    margin: 16px 0 33px;
+
+    .tag {
+      font-size: 14px;
+    }
+  }
+
+  .search {
+    margin-bottom: 33px;
+  }
+
+  .button-submit {
+    margin-top: 40px;
+  }
+}
