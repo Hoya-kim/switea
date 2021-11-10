@@ -78,21 +78,21 @@
               <input
                 type="text"
                 id="date"
-                class="datepicker"
+                class="datepicker input--border"
                 aria-required="true"
                 readonly
               />
             </div>
             <div class="input-container capacity">
               <p class="input-container__label">모집 인원</p>
-              <span>
+              <span class="input-container__box">
                 <label for="minCapacity">최소 인원</label>
-                <input type="text" id="minCapacity" />명
+                <input type="text" id="minCapacity" class="input--border" /> 명
               </span>
               <span class="divider">-</span>
-              <span>
+              <span class="input-container__box">
                 <label for="maxCapacity">최대 인원</label>
-                <input type="text" id="maxCapacity" />명
+                <input type="text" id="maxCapacity" class="input--border" /> 명
               </span>
             </div>
             <div class="input-container">
@@ -100,12 +100,17 @@
               <input
                 type="text"
                 id="contact"
+                class="input--border"
                 placeholder="ex) https://open.kakao.com, 010-0000-0000"
               />
             </div>
             <div class="input-container">
               <label for="content">스터디 내용</label>
-              <textarea name="content" id="content"></textarea>
+              <textarea
+                name="content"
+                id="content"
+                class="input--border"
+              ></textarea>
             </div>
             <button class="recruit__submit button-submit">등록하기</button>
           </fieldset>
