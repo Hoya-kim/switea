@@ -1,2 +1,28 @@
 @use '../base/' as *;
 @use '../utils/' as *;
+
+.search {
+  display: flex;
+  width: 100%;
+  height: 56px;
+  padding: 9px;
+  border: $border 1px solid;
+  border-radius: 5px;
+  &__input-container {
+    width: 100%;
+    height: 36px;
+    input {
+      width: 100%;
+      height: 26px;
+      border: none;
+      margin: 5px;
+      padding: 0 0 0 40px;
+      background-image: url(../../src/images/search_symbol.png);
+      background-repeat: no-repeat;
+      background-size: 26px;
+    }
+    label {
+      @include a11yHidden();
+    }
+  }
+}

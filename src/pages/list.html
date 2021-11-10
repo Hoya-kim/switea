@@ -16,16 +16,7 @@
         <!-- @TODO : padding trick -->
         <button type="button" class="back">뒤로 가기</button>
       </header>
-      <!-- @TODO : Implement to web component -->
-      <nav class="navigation">
-        <ul>
-          <li><a href="#">홈</a></li>
-          <li><a href="#">목록보기</a></li>
-          <li><a href="#">지도</a></li>
-          <li><a href="#">모집하기</a></li>
-          <li><a href="#">마이페이지</a></li>
-        </ul>
-      </nav>
+      <nav-component></nav-component>
       <main class="list-container">
         <!-- Each of Page -->
         <form>
@@ -33,15 +24,16 @@
             <legend>스터디 검색 폼</legend>
             <div class="search">
               <div class="search__input-container">
+                <label for="search-input">검색</label>
                 <input
                   type="search"
                   id="search-input"
                   name="keyword"
                   aria-required="true"
+                  placeholder="위치를 입력하세요."
                 />
-                <label for="search-input">검색</label>
               </div>
-              <div class="search__toggle-button-container">
+              <div class="toggle-button-container">
                 <input
                   type="radio"
                   id="search-type-study"
