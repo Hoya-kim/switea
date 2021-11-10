@@ -3,33 +3,6 @@
 @use '../components/' as *;
 
 .list-container {
-  .search {
-    display: flex;
-    width: 100%;
-    height: 56px;
-    padding: 9px;
-    border: $border 1px solid;
-    border-radius: 5px;
-    &__input-container {
-      width: 100%;
-      height: 36px;
-      input {
-        width: 100%;
-        height: 26px;
-        border: none;
-        margin: 5px;
-        padding: 0 0 0 40px;
-        background-image: url(../../src/images/search_symbool.png);
-        background-repeat: no-repeat;
-        background-size: 26px;
-      }
-      label {
-        @include a11yHidden();
-      }
-    }
-  }
-  .filter {
-  }
   .study-lists {
     &__card {
       width: 100%;
@@ -42,30 +15,8 @@
       background-color: lavender;
     }
   }
+
   .toggle-button-container {
-    // 토글 버튼 공통 스타일
-    display: flex;
-    flex-direction: row;
-    height: 36px;
-    padding: 3px;
-    background-color: $toggle-button;
-    border-radius: 18px;
-    color: $gray1;
-
-    label {
-      display: inline-block;
-      width: 50%;
-      height: 30px;
-      line-height: 30px;
-      text-align: center;
-    }
-    input[checked] + label {
-      border-radius: 15px;
-      background-color: $white;
-      color: $primary;
-    }
-
-    // 토글 버튼 개별 스타일
     width: 25%;
     min-width: 130px;
   }
