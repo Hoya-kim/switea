@@ -57,3 +57,23 @@ body {
   transform: translateX(-50%);
   max-width: 768px;
 }
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  .tag {
+    display: inline-block;
+    height: 24px;
+    line-height: 22px;
+    padding: 0 12px;
+    border: $primary 1px solid;
+    color: $primary;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+  .tag.location {
+    border: $highlight 1px solid;
+    color: $highlight;
+  }
+}

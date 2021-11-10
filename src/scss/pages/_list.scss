@@ -1,19 +1,9 @@
 @use '../base/' as *;
 @use '../utils/' as *;
-@use '../components/' as *;
 
 .list-container {
-  .study-lists {
-    &__card {
-      width: 100%;
-      border: $border 1px solid;
-      border-radius: 5px;
-    }
-    &__profile-image {
-      width: 20%;
-      height: 50px;
-      background-color: lavender;
-    }
+  .tags {
+    margin-top: 10px;
   }
 
   .toggle-button-container {
