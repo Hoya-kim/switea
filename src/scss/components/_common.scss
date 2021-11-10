@@ -8,7 +8,8 @@ body {
 
 .container {
   max-width: 768px;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   margin: 0 auto;
   background-color: white;
   padding: 94px 18px 89px;
@@ -21,6 +22,31 @@ body {
   left: 50%;
   transform: translateX(-50%);
   max-width: 768px;
+  height: 61px;
+  background: $white;
+  z-index: 999;
+
+  .title {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 61px;
+    border-bottom: 1px solid $border;
+  }
+
+  .back {
+    position: absolute;
+    top: 50%;
+    left: 22px;
+    transform: translateY(-50%);
+    appearance: none;
+    width: 19px;
+    height: 16px;
+    padding-top: 16px;
+    overflow: hidden;
+    border: none;
+    background: url(../images/header_back.png) no-repeat top center / contain;
+  }
 }
 
 .navigation {

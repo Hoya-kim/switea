@@ -1,2 +1,81 @@
 @use '../base/' as *;
 @use '../utils/' as *;
+
+.input-container {
+  position: relative;
+  & + .input-container {
+    margin-top: 33px;
+  }
+
+  &__label {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 9px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  input {
+    width: 100%;
+    padding: 9px;
+    height: 54px;
+    border: none;
+    border-bottom: 1px solid $border;
+
+    &::placeholder {
+      font-weight: 300;
+    }
+  }
+
+  .input--border {
+    border: 1px solid $border;
+    border-radius: 5px;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 9px;
+    resize: none;
+  }
+
+  .datepicker {
+    padding-left: 62px;
+    background: url('../images/recruit_calendar.png') no-repeat;
+    background-position: 16px center;
+  }
+
+  &.capacity {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    .divider {
+      font-size: 18px;
+    }
+  }
+
+  .capacity__box {
+    width: 47%;
+    display: flex;
+    align-items: center;
+    border: 1px solid $border;
+    border-radius: 5px;
+    overflow: hidden;
+    padding-right: 10px;
+
+    input {
+      height: 59px;
+      border: none;
+      margin-right: 10px;
+    }
+  }
+}
