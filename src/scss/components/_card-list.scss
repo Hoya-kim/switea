@@ -9,6 +9,7 @@
     border-radius: 5px;
     margin: 26px 0;
     padding: 13px;
+    @include boxShadow();
     a {
       display: flex;
     }
@@ -24,7 +25,14 @@
   &__name {
     width: 100%;
     margin-top: 3px;
-    text-align: center;
+    font-size: 16px;
+    color: $gray1;
+  }
+  &__name::after {
+    content: ' | ';
+    color: $gray1;
+  }
+  &__date {
     font-size: 16px;
     color: $gray1;
   }
@@ -37,12 +45,5 @@
   &__subject {
     font-size: 18px;
     margin-bottom: 5px;
-  }
-  &__date {
-    //   position: absolute;
-    //   top: 0;
-    //   right: 0;
-    font-size: 14px;
-    color: $gray1;
   }
 }
