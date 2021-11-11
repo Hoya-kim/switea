@@ -13,10 +13,24 @@
   }
 
   .tags {
-    margin: 16px 0 33px;
+    align-items: flex-end;
+
+    & + .input-container {
+      margin-top: 33px;
+    }
 
     .tag {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 30px;
+      border-radius: 15px;
       font-size: 14px;
+      padding-right: 5px;
+
+      &:first-child {
+        margin-top: 16px;
+      }
     }
   }
 
