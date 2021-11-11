@@ -1,6 +1,24 @@
 import flatpickr from 'flatpickr';
 
+const $form = document.querySelector('.recruit-container form');
+const $tags = document.querySelector('.recruit-container .tags');
+const $addTags = document.querySelector('.recruit-container .add-tags');
 const $datepicker = document.querySelector('.datepicker');
+
+let tags = [];
+
+const addTag = content => {
+  const $tag = document.createElement('li');
+  const $tagDelete = document.createElement('button');
+  $tag.className = 'tag';
+  $tag.textContent = `#${content}`;
+  $tagDelete.className = 'tag-delete';
+  $tagDelete.textContent = 'X';
+  $tag.appendChild($tagDelete);
+  $tags.appendChild($tag);
+
+  tags = [...tags, content];
+};
 
 flatpickr($datepicker, {
   mode: 'range',
@@ -56,3 +74,30 @@ flatpickr($datepicker, {
     rangeSeparator: ' ~ ',
   },
 });
+
+$addTags.onkeydown = e => {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  const content = e.target.value.trim();
+
+  if (content) {
+    tags.length < 10
+      ? addTag(content)
+      : alert('태그는 10개까지 등록 가능합니다.');
+  }
+
+  e.target.value = '';
+};
+
+$tags.onclick = e => {
+  if (!e.target.classList.contains('tag-delete')) return;
+  e.preventDefault();
+
+  const allTag = document.querySelectorAll('.tags li');
+  tags.splice([...allTag].indexOf(e.target.closest('li')), 1);
+  e.target.closest('li').remove();
+};
+
+$form.onsubmit = e => {
+  e.preventDefault();
+};
