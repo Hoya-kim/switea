@@ -1,5 +1,6 @@
 @use '../base/' as *;
 @use '../utils/' as *;
+@import '~flatpickr/dist/themes/light.css';
 
 body {
   // @TODO : Change to color variable
