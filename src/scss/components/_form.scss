@@ -22,7 +22,7 @@
     font-weight: 500;
   }
 
-  input {
+  input:not([type='radio']) {
     width: 100%;
     padding: 9px;
     height: 54px;
@@ -30,7 +30,7 @@
     border-bottom: 1px solid $border;
   }
 
-  .input--border {
+  input.input--border {
     border: 1px solid $border;
     border-radius: 5px;
   }
@@ -42,10 +42,18 @@
     resize: none;
   }
 
-  .datepicker {
+  input.datepicker {
     padding-left: 62px;
     background: url('../images/recruit_calendar.png') no-repeat;
     background-position: 16px center;
+  }
+
+  input.location {
+    padding-left: 62px;
+    background: url('../images/search_symbol.png') no-repeat;
+    background-position: 16px center;
+    background-size: 26px;
+    outline-offset: 0;
   }
 
   &.capacity {
