@@ -90,12 +90,12 @@ module.exports = {
       template: 'src/pages/recruit.html',
     }),
     new HtmlWebpackPlugin({
-      filename: 'signin.html',
+      filename: 'signup.html',
       template: 'src/pages/signin.html',
       chunks: ['app', 'signup'],
     }),
     new HtmlWebpackPlugin({
-      filename: 'signup.html',
+      filename: 'signin.html',
       template: 'src/pages/signup.html',
       chunks: ['app', 'signin'],
     }),
