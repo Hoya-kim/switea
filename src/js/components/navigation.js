@@ -44,6 +44,8 @@ export default class navigation extends HTMLElement {
           transform: translateX(-50%);
           max-width: 768px;
           background-color: #fff;
+          box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.15);
+          z-index: 999;
         }
         ul {
           display: flex;
