@@ -11,3 +11,46 @@
     min-width: 130px;
   }
 }
+
+.filter {
+  position: relative;
+  margin-top: 26px;
+
+  &__toggle-button-container {
+    height: 26px;
+    overflow: hidden;
+  }
+  &__toggle-button {
+    width: 26px;
+    padding-top: 26px;
+    background-image: url(../../src/images/filter_symbol_deactivate.png);
+    background-size: 26px;
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+  }
+
+  &__modal {
+    position: absolute;
+    // top: 52px;
+    z-index: 10;
+    background-color: $white;
+    max-width: 732px;
+    border: $border 1px solid;
+    border-radius: 5px;
+    padding: 15px;
+    button {
+      margin-top: 33px;
+    }
+  }
+
+  .toggle-button-container {
+    display: inline-flex;
+    width: auto;
+    label {
+      margin-bottom: 0;
+      padding: 0 11px;
+      font-size: 16px;
+    }
+  }
+}
