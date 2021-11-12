@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Switea</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="logo a11y-hidden">
+        <a href="#">Switea</a>
+      </h1>
+      <header class="header">
+        <h2 class="title">회원가입</h2>
+        <button type="button" class="back">뒤로 가기</button>
+      </header>
+      <nav-component></nav-component>
+      <main class="signup-container">
+        <!-- Each of Page -->
+        <form>
+          <fieldset>
+            <legend>회원가입</legend>
+            <div class="input-container">
+              <label for="signupEmail">이메일</label>
+              <input
+                type="email"
+                name="email"
+                id="signupEmail"
+                placeholder="switea@gmail.com"
+                aria-required="true"
+              />
+              <span class="input-container__comment"></span>
+            </div>
+            <div class="input-container">
+              <label for="signupPassword">비밀번호</label>
+              <input
+                type="password"
+                id="signupPassword"
+                name="password"
+                aria-required="true"
+              />
+              <span class="input-container__comment"></span>
+            </div>
+            <div class="input-container">
+              <label for="signupConfirmPassword">비밀번호 확인</label>
+              <input
+                type="password"
+                id="signupConfirmPassword"
+                name="confirmPassword"
+                aria-required="true"
+              />
+              <span class="input-container__comment"></span>
+            </div>
+            <div class="input-container">
+              <label for="signupName">이름</label>
+              <input
+                type="text"
+                id="signupName"
+                name="userName"
+                aria-required="true"
+              />
+              <span class="input-container__comment"></span>
+            </div>
+            <div class="input-container">
+              <label for="signupNickname">닉네임</label>
+              <input
+                type="text"
+                id="signupNickname"
+                name="nickname"
+                aria-required="true"
+              />
+              <span class="input-container__comment"></span>
+            </div>
+            <div class="input-container">
+              <label for="signupPhone">핸드폰 번호</label>
+              <input
+                type="text"
+                id="signupPhone"
+                name="phoneNum"
+                placeholder="010-XXXX-XXXX"
+                aria-required="true"
+              />
+              <span class="input-container__comment"></span>
+            </div>
+            <button class="signup-submit button-submit" disabled>
+              회원가입
+            </button>
+          </fieldset>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>
