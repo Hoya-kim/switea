@@ -1,0 +1,44 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+.view-container {
+  .tags {
+    margin-bottom: 17px;
+
+    .tag {
+      height: 26px;
+      border-radius: 13px;
+      font-size: 14px;
+    }
+  }
+
+  .view {
+    &__info {
+      width: 100%;
+      border-bottom: 1px solid $border;
+      border-collapse: collapse;
+      border-spacing: 0;
+
+      tr {
+        border-top: 1px solid $border;
+      }
+
+      th {
+        text-align: left;
+        font-weight: 400;
+        padding: 20px 0;
+      }
+
+      td {
+        padding: 20px 0;
+      }
+    }
+
+    &__contents {
+      margin-top: 20px;
+      padding: 17px;
+      border: 1px solid $border;
+      border-radius: 5px;
+    }
+  }
+}
