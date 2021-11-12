@@ -94,15 +94,16 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'recruit.html',
       template: 'src/pages/recruit.html',
+      chunks: ['app', 'recruit'],
     }),
     new HtmlWebpackPlugin({
       filename: 'signup.html',
-      template: 'src/pages/signin.html',
+      template: 'src/pages/signup.html',
       chunks: ['app', 'signup'],
     }),
     new HtmlWebpackPlugin({
       filename: 'signin.html',
-      template: 'src/pages/signup.html',
+      template: 'src/pages/signin.html',
       chunks: ['app', 'signin'],
     }),
     // new MiniCssExtractPlugin({ filename: 'css/style.css' }),
