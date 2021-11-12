@@ -1,0 +1,12 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+.signup-container {
+  .button-submit {
+    margin-top: 48px;
+  }
+
+  .input-container {
+    margin-top: 35px;
+  }
+}
