@@ -11,6 +11,7 @@ module.exports = {
     map: './src/js/map.js',
     mypage: './src/js/mypage.js',
     list: './src/js/list.js',
+    view: './src/js/view.js',
     recruit: './src/js/recruit.js',
     sign: './src/js/sign.js',
   },
@@ -85,6 +86,11 @@ module.exports = {
       chunks: ['app', 'list'],
     }),
     new HtmlWebpackPlugin({
+      filename: 'view.html',
+      template: 'src/pages/view.html',
+      chunks: ['app', 'view'],
+    }),
+    new HtmlWebpackPlugin({
       filename: 'recruit.html',
       template: 'src/pages/recruit.html',
     }),
@@ -115,12 +121,12 @@ module.exports = {
     // https://webpack.js.org/configuration/dev-server/#devserverport
     port: 'auto',
     // https://webpack.js.org/configuration/dev-server/#devserverproxy
-    proxy: {
-      '/': {
-        target: 'http://localhost:3001/',
-        pathRewrite: { '^/': '/' },
-      },
-    },
+    // proxy: {
+    //   '/': {
+    //     target: 'http://localhost:3001/',
+    //     pathRewrite: { '^/': '/' },
+    //   },
+    // },
   },
   // 소스 맵(Source Map)은 디버깅을 위해 번들링된 파일과 번들링되기 이전의 소스 파일을 연결해주는 파일이다.
   devtool: 'source-map',
