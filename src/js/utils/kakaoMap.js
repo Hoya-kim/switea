@@ -40,11 +40,10 @@ const setGeoMarker = () => {
         map,
       });
       currentGeoMarker.setMap(map);
-      console.log(locPosition);
     });
   } else {
     // HTML5의 GeoLocation을 사용할 수 없을 때
-    alert('스터디 검색을 위해 위치정보가 필요해요 😭');
+    alert('스터디 검색을 위해 위치 정보가 필요해요 😭');
   }
 };
 
