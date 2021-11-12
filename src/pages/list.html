@@ -55,64 +55,67 @@
         </form>
 
         <!-- 필터 모달 시작 -->
-
         <div class="filter">
           <div class="filter__toggle-button-container">
-            <!-- TODO: 필터가 열린 상태일 때는 텍스트를 '필터 닫기'로, 필터 이미지를 primary color로 동적으로 변경 -->
             <button class="filter__toggle-button">필터 열기</button>
           </div>
-          <div class="filter__modal">
-            <form>
-              <div class="input-container">
-                <p class="input-container__label">스터디 유형</p>
-                <div class="toggle-button-container">
-                  <input
-                    type="radio"
-                    id="typeRegular"
-                    name="type"
-                    value="regular"
-                    checked
-                  />
-                  <label for="typeRegular">정기스터디</label>
-                  <input
-                    type="radio"
-                    id="typeIrregular"
-                    name="type"
-                    value="irregular"
-                  />
-                  <label for="typeIrregular">일시스터디</label>
+          <div class="filter__modal-container">
+            <div class="filter__modal">
+              <form>
+                <div class="input-container">
+                  <p class="input-container__label">스터디 유형</p>
+                  <div class="toggle-button-container">
+                    <input
+                      type="radio"
+                      id="typeRegular"
+                      name="type"
+                      value="regular"
+                      checked
+                    />
+                    <label for="typeRegular">정기스터디</label>
+                    <input
+                      type="radio"
+                      id="typeIrregular"
+                      name="type"
+                      value="irregular"
+                    />
+                    <label for="typeIrregular">일시스터디</label>
+                  </div>
                 </div>
-              </div>
-              <div class="input-container">
-                <label for="studyTags">스터디 태그</label>
-                <input
-                  type="text"
-                  id="studyTags"
-                  placeholder="검색할 태그를 입력해 주세요."
-                  maxlength="3"
-                  class="add-tags"
-                />
-                <ul class="tags">
-                  <!-- <li class="tag">
-                    #javascript
-                    <button class="tag-delete">X</button>
-                  </li> -->
-                </ul>
-              </div>
-              <div class="input-container">
-                <label for="date">일자</label>
-                <input
-                  type="text"
-                  id="date"
-                  class="datepicker input--border"
-                  aria-required="true"
-                  readonly
-                />
-              </div>
-              <button class="filter__submit button-submit">
-                필터 적용하기
-              </button>
-            </form>
+                <div class="input-container">
+                  <label for="studyTags">스터디 태그</label>
+                  <input
+                    type="text"
+                    id="studyTags"
+                    placeholder="검색할 태그를 입력해 주세요."
+                    maxlength="10"
+                    class="add-tags"
+                  />
+                  <ul class="tags">
+                    <!-- <li class="tag">
+                      #javascript
+                      <button class="tag-delete">X</button>
+                    </li> -->
+                  </ul>
+                </div>
+                <div class="input-container">
+                  <label for="date">일자</label>
+                  <input
+                    type="text"
+                    id="date"
+                    class="datepicker input--border"
+                    aria-required="true"
+                    readonly
+                  />
+                </div>
+                <button class="filter__submit button-submit">
+                  필터 적용하기
+                </button>
+                <div class="filter__modal-button-container">
+                  <button class="filter__modal-close">close</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
 
