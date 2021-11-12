@@ -7,6 +7,15 @@
     margin-top: 33px;
   }
 
+  &__comment {
+    position: absolute;
+    top: 100%;
+    margin-top: 6px;
+    font-size: 14px;
+    display: block;
+    color: red;
+  }
+
   &__label {
     width: 100%;
     margin-top: 0;

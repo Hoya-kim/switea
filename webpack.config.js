@@ -11,8 +11,10 @@ module.exports = {
     map: './src/js/map.js',
     mypage: './src/js/mypage.js',
     list: './src/js/list.js',
+    view: './src/js/view.js',
     recruit: './src/js/recruit.js',
-    sign: './src/js/sign.js',
+    signin: './src/js/signin.js',
+    signup: './src/js/signup.js',
   },
   // 번들링된 js 파일의 이름(filename)과 저장될 경로(path)를 지정
   // https://webpack.js.org/configuration/output/#outputpath
@@ -85,12 +87,23 @@ module.exports = {
       chunks: ['app', 'list'],
     }),
     new HtmlWebpackPlugin({
+      filename: 'view.html',
+      template: 'src/pages/view.html',
+      chunks: ['app', 'view'],
+    }),
+    new HtmlWebpackPlugin({
       filename: 'recruit.html',
       template: 'src/pages/recruit.html',
     }),
     new HtmlWebpackPlugin({
-      filename: 'sign.html',
-      template: 'src/pages/sign.html',
+      filename: 'signup.html',
+      template: 'src/pages/signin.html',
+      chunks: ['app', 'signup'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'signin.html',
+      template: 'src/pages/signup.html',
+      chunks: ['app', 'signin'],
     }),
     // new MiniCssExtractPlugin({ filename: 'css/style.css' }),
     new CopyPlugin({
@@ -115,12 +128,12 @@ module.exports = {
     // https://webpack.js.org/configuration/dev-server/#devserverport
     port: 'auto',
     // https://webpack.js.org/configuration/dev-server/#devserverproxy
-    proxy: {
-      '/': {
-        target: 'http://localhost:3001/',
-        pathRewrite: { '^/': '/' },
-      },
-    },
+    // proxy: {
+    //   '/': {
+    //     target: 'http://localhost:3001/',
+    //     pathRewrite: { '^/': '/' },
+    //   },
+    // },
   },
   // 소스 맵(Source Map)은 디버깅을 위해 번들링된 파일과 번들링되기 이전의 소스 파일을 연결해주는 파일이다.
   devtool: 'source-map',
