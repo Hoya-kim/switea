@@ -11,6 +11,7 @@ module.exports = {
     map: './src/js/map.js',
     mypage: './src/js/mypage.js',
     list: './src/js/list.js',
+    view: './src/js/view.js',
     recruit: './src/js/recruit.js',
     signin: './src/js/signin.js',
     signup: './src/js/signup.js',
@@ -84,6 +85,11 @@ module.exports = {
       filename: 'list.html',
       template: 'src/pages/list.html',
       chunks: ['app', 'list'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'view.html',
+      template: 'src/pages/view.html',
+      chunks: ['app', 'view'],
     }),
     new HtmlWebpackPlugin({
       filename: 'recruit.html',
