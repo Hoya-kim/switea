@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Switea</title>
+    <link
+      href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
@@ -17,10 +21,34 @@
       </header>
       <nav-component></nav-component>
       <main class="signup-container">
-        <!-- Each of Page -->
         <form>
           <fieldset>
             <legend>회원가입</legend>
+            <div class="input-container profileImage">
+              <label>프로필 이미지</label>
+              <div class="profile-image-container">
+                <div class="profile-image-stroke">
+                  <img
+                    src="../images/profile/profileImageDefault.svg"
+                    alt=""
+                    class="profile-image-view"
+                  />
+                </div>
+                <label for="signupProfileImage">
+                  <img
+                    class="profile-image-upload"
+                    src="../images/profile/btn_profileinput_camera.svg"
+                    alt=""
+                /></label>
+              </div>
+              <input
+                type="file"
+                name="profileImage"
+                id="signupProfileImage"
+                class="hidden"
+                accept="image/*"
+              />
+            </div>
             <div class="input-container">
               <label for="signupEmail">이메일</label>
               <input
@@ -29,8 +57,12 @@
                 id="signupEmail"
                 placeholder="switea@gmail.com"
                 aria-required="true"
+                class="required"
               />
               <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <span class="error"></span>
             </div>
             <div class="input-container">
               <label for="signupPassword">비밀번호</label>
@@ -39,8 +71,12 @@
                 id="signupPassword"
                 name="password"
                 aria-required="true"
+                class="required"
               />
               <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <div class="input-container">
               <label for="signupConfirmPassword">비밀번호 확인</label>
@@ -49,8 +85,12 @@
                 id="signupConfirmPassword"
                 name="confirmPassword"
                 aria-required="true"
+                class="required"
               />
               <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <div class="input-container">
               <label for="signupName">이름</label>
@@ -59,8 +99,12 @@
                 id="signupName"
                 name="userName"
                 aria-required="true"
+                class="required"
               />
               <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <div class="input-container">
               <label for="signupNickname">닉네임</label>
@@ -69,8 +113,12 @@
                 id="signupNickname"
                 name="nickname"
                 aria-required="true"
+                class="required"
               />
               <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <div class="input-container">
               <label for="signupPhone">핸드폰 번호</label>
@@ -80,14 +128,36 @@
                 name="phoneNum"
                 placeholder="010-XXXX-XXXX"
                 aria-required="true"
+                class="required"
               />
               <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <button class="signup-submit button-submit" disabled>
               회원가입
             </button>
           </fieldset>
         </form>
+        <!-- local SVG sprite -->
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+          <symbol id="success" fill="currentColor" viewBox="0 0 16 16">
+            <path
+              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
+            />
+          </symbol>
+          <symbol id="error" fill="currentColor" viewBox="0 0 16 16">
+            <path
+              d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+            />
+          </symbol>
+          <symbol id="warning" fill="currentColor" viewBox="0 0 16 16">
+            <path
+              d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+            />
+          </symbol>
+        </svg>
       </main>
     </div>
   </body>
