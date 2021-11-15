@@ -70,7 +70,7 @@ document.querySelector('#signupProfileImage').onchange = e => {
   const reader = new FileReader();
 
   reader.onload = () => {
-    document.querySelector('.profile-image-view').src = reader.result;
+    document.querySelector('.profile-image__view').src = reader.result;
   };
 
   reader.readAsDataURL(e.target.files[0]);
