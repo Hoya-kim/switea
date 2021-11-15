@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, onValue } from 'firebase/database';
+import { getDatabase, ref, onValue } from 'firebase/database';
 
 const $filterToggleButton = document.querySelector('.filter__toggle-button');
 const $modalContainer = document.querySelector('.filter__modal-container');
@@ -19,42 +19,44 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
+// 데이터 읽기
+const studyList = ref(database, 'studies/');
+
 let studyListData = {};
 
 const renderStudyList = () => {
-  const $studyLists = document.querySelector('.study-lists');
-  studyListData.forEach(el => {
-    const startDate = new Date(el.startDate);
-    const endDate = new Date(el.endDate);
+  const $studyList = document.querySelector('.study-list');
+  let studyListHTML = '';
 
-    const locationTag = el.location
-      ? `<li class="tag location">#${el.location.placeName}</li>`
+  studyListData.forEach(studyData => {
+    const startDate = new Date(studyData.startDate);
+    const endDate = new Date(studyData.endDate);
+
+    const locationTagHTML = studyData.location
+      ? `<li class="tag location">#${studyData.location.placeName}</li>`
       : '';
 
-    const tagsHTML = el.tags
-      ? el.tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
+    const tagsHTML = studyData.tags
+      ? studyData.tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
       : '';
 
-    $studyLists.innerHTML += `
-    <li class="study-lists__card">
+    studyListHTML += `
+    <li class="study-list__card">
       <a href="#">
-        <div class="study-lists__profile-image"></div>
-        <div class="study-lists__contents-container">
-          <p class="study-lists__subject">${el.content}</p>
-          <span class="study-lists__name">${el.nickName}</span>
-          <span class="study-lists__date">${startDate.getMonth()}월 ${startDate.getDate()}일 - ${endDate.getMonth()}월 ${endDate.getDate()}일</span>
-          <ul class="study-lists__tags tags">
-          ${locationTag}
-            ${tagsHTML}
+        <div class="study-list__profile-image"></div>
+        <div class="study-list__contents-container">
+          <p class="study-list__subject">${studyData.title}</p>
+          <span class="study-list__name">${studyData.nickName}</span>
+          <span class="study-list__date">${startDate.getMonth()}월 ${startDate.getDate()}일 - ${endDate.getMonth()}월 ${endDate.getDate()}일</span>
+          <ul class="study-list__tags tags">
+            ${locationTagHTML}${tagsHTML}
           </ul>
         </div>
       </a>
     </li>`;
   });
+  $studyList.innerHTML = studyListHTML;
 };
-
-// 데이터 읽기
-const studyList = ref(database, 'studies/');
 
 // 데이터 업데이트될 때 이벤트 발생
 onValue(studyList, snapshot => {
