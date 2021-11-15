@@ -83,11 +83,11 @@ const initMapView = mapContainer => {
 };
 
 /**
- *
- * @param {string} query
- * @param {number} [page=1]
- * @param {number} [size=15]
- * @param {string} [sort='accuracy']
+ * Search by keyword on kakao map API
+ * @param {string} query search keyword
+ * @param {number} [page=1] page number
+ * @param {number} [size=15] page size
+ * @param {string} [sort='accuracy'] sort by 'accuracy' or 'distance'
  */
 const searchByKeyword = async (
   query,
