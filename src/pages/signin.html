@@ -20,7 +20,7 @@
         <form>
           <fieldset>
             <legend>로그인</legend>
-            <div class="input-container">
+            <div class="input-container email">
               <label for="signinEmail">이메일</label>
               <input
                 type="email"
@@ -29,7 +29,7 @@
                 placeholder="switea@gmail.com"
                 aria-required="true"
               />
-              <span class="input-container__comment"></span>
+              <span class="error"></span>
             </div>
             <div class="input-container">
               <label for="signinPassword">비밀번호</label>
@@ -39,7 +39,7 @@
                 name="password"
                 aria-required="true"
               />
-              <span class="input-container__comment"></span>
+              <span class="error"></span>
             </div>
             <button class="signin-submit button-submit" disabled>로그인</button>
           </fieldset>

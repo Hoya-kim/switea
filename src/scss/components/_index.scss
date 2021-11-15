@@ -5,4 +5,5 @@
 @forward './navigation';
 @forward './profile';
 @forward './search';
-@forward './common';
+@forward './common'; //왜 두번?
+@forward './swal';
