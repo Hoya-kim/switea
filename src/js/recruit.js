@@ -18,6 +18,8 @@ const app = initializeApp(firebaseConfig);
 const $form = document.querySelector('.recruit-container form');
 const $tags = document.querySelector('.recruit-container .tags');
 const $addTags = document.querySelector('.recruit-container .add-tags');
+const $location = document.getElementById('location');
+const $locationModal = document.querySelector('.location-modal__wrap');
 const $datepicker = document.querySelector('.datepicker');
 const $capacity = document.querySelector('.capacity');
 
@@ -154,6 +156,21 @@ $tags.onclick = e => {
   const allTag = document.querySelectorAll('.tags li');
   tags.splice([...allTag].indexOf(e.target.closest('li')), 1);
   e.target.closest('li').remove();
+};
+
+$location.onkeydown = e => {
+  if (e.key !== 'Enter') return;
+  $locationModal.style.display = 'block';
+};
+
+$locationModal.onclick = e => {
+  if (
+    !e.target.classList.contains('location-modal--close') &&
+    !e.target.classList.contains('location-modal__bg')
+  )
+    return;
+  $locationModal.style.display = 'none';
+  $location.value = '';
 };
 
 $capacity.oninput = e => {
