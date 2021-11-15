@@ -67,7 +67,7 @@
               </ul>
             </div>
             <div class="input-container">
-              <label for="location">스터디 장소</label>
+              <label for="location">스터디 장소 검색</label>
               <input
                 type="search"
                 id="location"
@@ -136,6 +136,26 @@
             <button class="recruit__submit button-submit">등록하기</button>
           </fieldset>
         </form>
+
+        <!-- 검색 결과 모달 -->
+        <div class="location-modal__wrap">
+          <div class="location-modal__bg"></div>
+          <div class="location-modal__contents">
+            <h3 class="location-modal__title">장소 검색 결과</h3>
+            <ul class="location-modal__search-list">
+              <li class="no-result">검색 결과가 없습니다.</li>
+              <li class="location-modal__search-list--item">
+                <p class="place-name">강남역</p>
+                <p class="address-name">서울특별시 강남구 역삼동 858-4번지</p>
+              </li>
+              <li class="location-modal__search-list--item">
+                <p class="place-name">강남역</p>
+                <p class="address-name">서울특별시 강남구 역삼동 858-4번지</p>
+              </li>
+            </ul>
+            <button type="button" class="location-modal--close">닫기</button>
+          </div>
+        </div>
       </main>
     </div>
   </body>
