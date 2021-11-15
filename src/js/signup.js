@@ -1,14 +1,12 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import axios from 'axios';
-import * as Joi from 'joi';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/storage';
+import 'firebase/compat/database';
+import Swal from 'sweetalert2';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { inputStatus, isSubmit, isSamePassword } from './formValidation';
 
-const $inputConfirmPassword = document.querySelector(
-  'input[name = confirmPassword]',
-);
-
-const formInfo = {};
-
+// firebase setting
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
   authDomain: 'switea-19c19.firebaseapp.com',
@@ -20,60 +18,96 @@ const firebaseConfig = {
   measurementId: 'G-XN3HTBG4LC',
 };
 
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
 
-const errorMessage = {
-  email: '이메일 형식에 맞게 입력해 주세요.',
-  password: '숫자, 영문 대소문자를 조합하여 8-20자 이내로 입력해주세요.',
-  confirmPassword: '비밀번호를 동일하게 입력해 주세요.',
-  userName: '이름을 2-10자 이내로 입력해주세요.',
-  nickname: '한글, 알파벳, 숫자를 2-15글자로 입력해 주세요.',
-  phoneNum: '핸드폰 번호 형식을 확인해 주세요.',
+const $signUpSubmit = document.querySelector('.signup-submit');
+const $confirmPassword = document.querySelector('#signupConfirmPassword');
+const allInputOfForm = document.querySelectorAll('.required');
+
+const getFormInfo = () => {
+  const formInfo = {};
+  allInputOfForm.forEach(input => {
+    formInfo[input.name] = input.value;
+  });
+  return formInfo;
 };
 
-const schema = Joi.object({
-  email: Joi.string().email({ tlds: { allow: false } }),
-  password: Joi.string()
-    .pattern(/[a-zA-Z0-9]/)
-    .min(8)
-    .max(20),
-  confirmPassword: Joi.string().equal(Joi.ref('password')),
-  userName: Joi.string().min(2).max(10),
-  nickname: Joi.string().min(2).max(15),
-  phoneNum: Joi.string().pattern(
-    new RegExp('01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}'),
-  ),
-});
+const checkValidation = target => {
+  const [$iconSuccess, $iconError] =
+    target.parentNode.querySelectorAll('.icon');
+  const $errorMessage = target.parentNode.querySelector('.error');
+  const inputType = inputStatus[target.name];
+
+  inputType.status =
+    target.name !== 'confirmPassword'
+      ? inputType.RegExp.test(target.value)
+      : isSamePassword(target.value);
+
+  $iconSuccess.classList.toggle('hidden', !inputType.status);
+  $iconError.classList.toggle('hidden', inputType.status);
+  $errorMessage.textContent = inputType.status ? '' : inputType.errorMessage;
+};
+
+const uploadImage = () => {
+  const ref = firebase.storage().ref();
+  const file = document.querySelector('#signupProfileImage').files[0];
+  const name = +new Date() + '-' + file.name;
+  const metadata = {
+    contentType: file.type,
+  };
+
+  return ref.child(name).put(file, metadata);
+};
+
+document.querySelector('#signupProfileImage').onclick = e => {
+  e.target.value = null;
+};
+
+document.querySelector('#signupProfileImage').onchange = e => {
+  if (!e.target.matches('input')) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    document.querySelector('.profile-image-view').src = reader.result;
+  };
+
+  reader.readAsDataURL(e.target.files[0]);
+};
 
 document.querySelector('form').oninput = e => {
-  const $errorMessage = e.target.parentNode.lastElementChild;
-  formInfo[e.target.name] = e.target.value;
-  const res = schema.validate(formInfo);
+  if (e.target.name === 'profileImage') return;
+  checkValidation(e.target);
 
-  $errorMessage.textContent = res.error ? errorMessage[e.target.name] : '';
-
+  // 비밀번호 확인창이 입력된 상태에서 비밀번호 재입력시 비밀번호 확인 input 초기화
   if (e.target.name === 'password') {
-    if ($inputConfirmPassword.value !== '') {
-      $inputConfirmPassword.value = '';
-      $inputConfirmPassword.parentNode.lastChild.textContent = '';
+    if ($confirmPassword.value !== '') {
+      $confirmPassword.value = '';
+      $confirmPassword.parentNode.querySelector('.error').textContent = '';
+      $confirmPassword.parentNode
+        .querySelector('.icon-success ')
+        .classList.add('hidden');
+      $confirmPassword.parentNode
+        .querySelector('.icon-error ')
+        .classList.add('hidden');
     }
   }
 
-  document.querySelector('.signup-submit').disabled = res.error;
+  $signUpSubmit.disabled = !isSubmit(allInputOfForm);
 };
 
-document.querySelector('.signup-submit').onclick = async e => {
+// 회원가입 버튼 클릭 시
+$signUpSubmit.onclick = async e => {
   e.preventDefault();
 
-  const { userName, phoneNum, nickname } = formInfo;
+  const { email, password, userName, phoneNum, nickname } = getFormInfo();
 
   try {
-    const result = await createUserWithEmailAndPassword(
-      auth,
-      formInfo.email,
-      formInfo.password,
-    );
+    await createUserWithEmailAndPassword(auth, email, password);
+    // 프로필 이미지 서버 storage에 저장
+    const snapshot = await uploadImage();
+    const profileImage = await snapshot.ref.getDownloadURL();
 
     await axios.put(
       `https://switea-19c19-default-rtdb.firebaseio.com/users/${auth.currentUser.uid}.json`,
@@ -81,12 +115,40 @@ document.querySelector('.signup-submit').onclick = async e => {
         userName,
         phoneNum,
         nickname,
+        profileImage,
       },
     );
 
-    alert('성공적으로 회원가입 되었습니다!');
-    window.location.href = '/signin.html';
-  } catch (e) {
-    console.log(e.message);
+    Swal.fire({
+      title: '회원가입 성공',
+      text: '성공적으로 회원가입 되었습니다. 로그인 페이지로 이동합니다.',
+      icon: 'success',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    }).then(() => {
+      window.location = '/signin.html';
+    });
+  } catch (error) {
+    const errorCode = error.code;
+    switch (errorCode) {
+      case 'auth/email-already-in-use':
+        Swal.fire({
+          title: '회원가입 실패',
+          text: '중복된 아이디 입니다.',
+          icon: 'error',
+          showCancelButton: false,
+          confirmButtonText: '확인',
+        });
+        break;
+      default:
+        Swal.fire({
+          title: '회원가입 실패',
+          text: '회원가입이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.',
+          icon: 'error',
+          showCancelButton: false,
+          confirmButtonText: '확인',
+        });
+        break;
+    }
   }
 };
