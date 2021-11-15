@@ -1,4 +1,31 @@
+import axios from 'axios';
+
 const { kakao } = window;
+
+const BASE_URL = 'https://dapi.kakao.com/v2/local/search';
+
+/**
+ * @constant {string} accessToken 카카오 API 접근 토큰
+ */
+const accessToken = `183967433118475fce82dc441bd2676c`;
+
+/**
+ * @constant {object} service axios instance
+ */
+const service = axios.create({
+  baseURL: BASE_URL, // api base url
+});
+
+/** Set request interceptor */
+service.interceptors.request.use(
+  config => {
+    config.headers.Authorization = `KakaoAK ${accessToken}`;
+    return config;
+  },
+  error => {
+    console.log(error);
+  },
+);
 
 /**
  * @constant {Object} INITIAL_COORDS 지도 초기 좌표
@@ -56,6 +83,46 @@ const initMapView = mapContainer => {
 };
 
 /**
+ * Search by keyword on kakao map API
+ * @param {string} query search keyword
+ * @param {number} [page=1] page number
+ * @param {number} [size=15] page size
+ * @param {string} [sort='accuracy'] sort by 'accuracy' or 'distance'
+ * @returns {Promise<object>} search result
+ */
+const searchByKeyword = async (
+  query,
+  page = 1,
+  size = 15,
+  sort = 'accuracy',
+) => {
+  try {
+    const url = `${BASE_URL}/keyword.json?query=${query}&page=${page}&size=${size}&sort=${sort}`;
+    const { data } = await service.get(url);
+    return data;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+/**
+ * @todo 카테고리로 검색
+ * @param {string} category
+ */
+const searchByCategory = async (coords = INITIAL_COORDS) => {
+  const cafeCode = 'CE7';
+
+  // try {
+  //   const result = await service.get(
+  //     `${BASE_URL}/category.json?category\_group\_code=${cafeCode}&x=${coords.LNG}&y=${coords.LAT}&radius=3000`,
+  //   );
+  //   console.log(result);
+  // } catch (e) {
+  //   console.error(e);
+  // }
+};
+
+/**
  * @todo 지도에 마커를 표시하는 함수
  */
 
@@ -63,4 +130,4 @@ const initMapView = mapContainer => {
  * @todo 실시간 위치를 파악하는 함수
  */
 
-export { initMapView, setGeoMarker };
+export { initMapView, setGeoMarker, searchByKeyword };
