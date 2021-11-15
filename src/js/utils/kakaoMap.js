@@ -16,7 +16,7 @@ const service = axios.create({
   baseURL: BASE_URL, // api base url
 });
 
-/** request interceptor */
+/** Set request interceptor */
 service.interceptors.request.use(
   config => {
     config.headers.Authorization = `KakaoAK ${accessToken}`;
@@ -88,6 +88,7 @@ const initMapView = mapContainer => {
  * @param {number} [page=1] page number
  * @param {number} [size=15] page size
  * @param {string} [sort='accuracy'] sort by 'accuracy' or 'distance'
+ * @returns {Promise<object>} search result
  */
 const searchByKeyword = async (
   query,
