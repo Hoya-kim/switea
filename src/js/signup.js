@@ -79,16 +79,17 @@ const uploadImage = () => {
 };
 
 // email 중복 검사 함수 => 리팩토링해보기
-const checkEmailDuplication = email =>
-  null ||
-  firebase
-    .database()
-    .ref()
-    .child('users')
-    .orderByChild('email')
-    .equalTo(email)
-    .once('value')
-    .then(snapshot => snapshot.val());
+const checkEmailDuplication = async email =>
+  Boolean(
+    await firebase
+      .database()
+      .ref()
+      .child('users')
+      .orderByChild('email')
+      .equalTo(email)
+      .once('value')
+      .then(snapshot => snapshot.val()),
+  );
 
 $signupProfileImage.onclick = e => {
   e.target.value = null;
