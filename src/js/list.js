@@ -4,6 +4,7 @@ import { getDatabase, ref, onValue } from 'firebase/database';
 const $filterToggleButton = document.querySelector('.filter__toggle-button');
 const $modalContainer = document.querySelector('.filter__modal-container');
 const $modalCloseButton = document.querySelector('.filter__modal-close');
+const $filterForm = document.querySelector('.filter__modal > form');
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -23,6 +24,13 @@ const database = getDatabase(app);
 const studyList = ref(database, 'studies/');
 
 let studyListData = {};
+
+const filterCondition = {
+  type: '',
+  tags: [],
+  startDate: 0,
+  endDate: 0,
+};
 
 const renderStudyList = () => {
   const $studyList = document.querySelector('.study-list');
@@ -78,3 +86,9 @@ const toggleFilterActivation = () => {
     toggleFilterActivation();
   };
 });
+
+$filterForm.onsubmit = e => {
+  e.preventDefault();
+  console.log(e.target);
+  toggleFilterActivation();
+};
