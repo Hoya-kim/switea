@@ -25,7 +25,12 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
 
+const $signupEmail = document.querySelector('#signupEmail');
 const $signUpSubmit = document.querySelector('.signup-submit');
+const $checkEmailDuplication = document.querySelector(
+  '.check-email-duplication',
+);
+const $signupProfileImage = document.querySelector('#signupProfileImage');
 const $confirmPassword = document.querySelector('#signupConfirmPassword');
 const allInputOfForm = document.querySelectorAll('.required');
 
@@ -37,6 +42,7 @@ const getFormInfo = () => {
   return formInfo;
 };
 
+// input의 유효성 검사
 const checkValidation = $target => {
   const [$iconSuccess, $iconError] =
     $target.parentNode.querySelectorAll('.icon');
@@ -56,7 +62,7 @@ const checkValidation = $target => {
 // firebase storage image upload
 const uploadImage = () => {
   const ref = firebase.storage().ref();
-  const file = document.querySelector('#signupProfileImage').files[0];
+  const file = $signupProfileImage.files[0];
 
   // firebase storage에 업로드 될 파일명 설정
   const name = `${new Date()
@@ -71,11 +77,25 @@ const uploadImage = () => {
   return ref.child(name).put(file, metadata);
 };
 
-document.querySelector('#signupProfileImage').onclick = e => {
+// email 중복 검사 함수
+const checkEmailDuplication = async email => {
+  const result = await firebase
+    .database()
+    .ref()
+    .child('users')
+    .orderByChild('email')
+    .equalTo(email)
+    .once('value')
+    .then(snapshot => snapshot.val());
+  return result;
+};
+
+$signupProfileImage.onclick = e => {
   e.target.value = null;
 };
 
-document.querySelector('#signupProfileImage').onchange = e => {
+// 프로필 이미지 파일 선택
+$signupProfileImage.onchange = e => {
   if (!e.target.matches('input')) return;
 
   const reader = new FileReader();
@@ -87,6 +107,7 @@ document.querySelector('#signupProfileImage').onchange = e => {
   reader.readAsDataURL(e.target.files[0]);
 };
 
+// input 입력 event
 document.querySelector('form').oninput = e => {
   if (e.target.name === 'profileImage') return;
   checkValidation(e.target);
@@ -104,6 +125,27 @@ document.querySelector('form').oninput = e => {
   $signUpSubmit.disabled = !isAbleToSubmit(allInputOfForm);
 };
 
+$signupEmail.oninput = e => {
+  e.target.parentNode.querySelector('.error').classList.remove('pass');
+  checkValidation(e.target); // 팀원들이랑 상의하기
+  $checkEmailDuplication.disabled = !inputStatus.email.status;
+};
+
+// 이메일 중복확인 버튼 클릭 시
+$checkEmailDuplication.onclick = async e => {
+  e.preventDefault();
+  const result = await checkEmailDuplication($signupEmail.value);
+
+  if (!result) {
+    e.target.parentNode.querySelector('.error').classList.add('pass');
+    e.target.parentNode.querySelector('.error').textContent =
+      '사용 가능한 이메일입니다. 가입을 진행해주세요.';
+  } else {
+    e.target.parentNode.querySelector('.error').textContent =
+      '중복된 이메일입니다. 다른 이메일을 사용해 주세요.';
+  }
+};
+
 // 회원가입 버튼 클릭 시
 $signUpSubmit.onclick = async e => {
   e.preventDefault();
@@ -112,13 +154,14 @@ $signUpSubmit.onclick = async e => {
 
   try {
     await createUserWithEmailAndPassword(auth, email, password);
-    // 프로필 이미지 서버 storage에 저장
+    // 프로필 이미지 firebase storage에 저장
     const snapshot = await uploadImage();
     const profileImage = await snapshot.ref.getDownloadURL();
 
     await axios.put(
       `https://switea-19c19-default-rtdb.firebaseio.com/users/${auth.currentUser.uid}.json`,
       {
+        email,
         userName,
         phoneNum,
         nickname,
