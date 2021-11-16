@@ -31,6 +31,7 @@ const $form = document.querySelector('.recruit-container form');
 const $addTags = document.querySelector('.recruit-container .add-tags');
 const $tags = document.querySelector('.recruit-container .tags');
 const $location = document.getElementById('location');
+const $modalSearch = document.getElementById('modalSearch');
 const $locationModal = document.querySelector('.location-modal__wrap');
 const $locationModalList = document.querySelector(
   '.location-modal__search-list',
@@ -119,23 +120,29 @@ const recruitRequest = async e => {
 
 // 이벤트 핸들러
 $addTags.onkeydown = e => {
+  if (e.isComposing) return;
   addTag(e, TAG_CONSTANTS, $tags);
 };
 
 $tags.onclick = removeTag;
 
-$location.onkeydown = async e => {
-  if (e.key !== 'Enter') return;
+$location.onclick = e => {
   e.target.blur();
+
+  $locationModal.style.display = 'block';
+  document.body.classList.add('non-scroll');
+  $modalSearch.focus();
+};
+
+$modalSearch.onkeydown = async e => {
+  if (e.isComposing || e.key !== 'Enter') return;
 
   const result = await searchByKeyword(e.target.value);
   documents = result.documents;
 
   const $searchListFragment = document.createDocumentFragment();
 
-  $locationModal.style.display = 'block';
-  document.body.classList.add('non-scroll');
-
+  $locationModalList.innerHTML = '';
   if (documents.length > 0) {
     documents.forEach(($el, index) => {
       const $searchListItem = document.createElement('li');
@@ -157,6 +164,7 @@ $location.onkeydown = async e => {
   }
 
   $locationModalList.append($searchListFragment);
+  $locationModalList.classList.add('border');
 };
 
 $locationModal.onclick = e => {
@@ -164,10 +172,12 @@ $locationModal.onclick = e => {
     e.target.classList.contains('location-modal--close') ||
     e.target.classList.contains('location-modal__bg')
   ) {
-    $location.value = '';
     $locationModal.style.display = 'none';
     $locationModalList.innerHTML = '';
     document.body.classList.remove('non-scroll');
+
+    $modalSearch.value = '';
+    $locationModalList.classList.remove('border');
   }
 
   if (e.target.matches('.location-modal__search-list *')) {
@@ -184,6 +194,9 @@ $locationModal.onclick = e => {
     $locationModal.style.display = 'none';
     $locationModalList.innerHTML = '';
     document.body.classList.remove('non-scroll');
+
+    $modalSearch.value = '';
+    $locationModalList.classList.remove('border');
   }
 };
 
@@ -192,7 +205,7 @@ $capacity.oninput = e => {
 };
 
 $form.onkeydown = e => {
-  if (e.key !== 'Enter' || e.target.name === 'content') return;
+  if (e.isComposing || e.key !== 'Enter' || e.target.name === 'content') return;
   e.preventDefault();
 };
 

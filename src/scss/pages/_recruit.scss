@@ -51,6 +51,10 @@
       left: 0;
       right: 0;
       z-index: 999;
+
+      .input-container {
+        margin-bottom: 30px;
+      }
     }
 
     &__bg {
@@ -81,8 +85,11 @@
     &__search-list {
       max-height: 60vh;
       overflow-y: auto;
-      border-top: 1px solid $border;
-      border-bottom: 1px solid $border;
+
+      &.border {
+        border-top: 1px solid $border;
+        border-bottom: 1px solid $border;
+      }
 
       .no-result {
         padding: 26px 0;
