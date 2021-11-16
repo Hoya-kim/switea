@@ -1,10 +1,14 @@
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/storage';
 import 'firebase/compat/database';
-import Swal from 'sweetalert2';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { inputStatus, isSubmit, isSamePassword } from './formValidation';
+import {
+  inputStatus,
+  isAbleToSubmit,
+  isSamePassword,
+} from './utils/formValidation';
 
 // firebase setting
 const firebaseConfig = {
@@ -27,32 +31,39 @@ const allInputOfForm = document.querySelectorAll('.required');
 
 const getFormInfo = () => {
   const formInfo = {};
-  allInputOfForm.forEach(input => {
-    formInfo[input.name] = input.value;
+  allInputOfForm.forEach($input => {
+    formInfo[$input.name] = $input.value;
   });
   return formInfo;
 };
 
-const checkValidation = target => {
+const checkValidation = $target => {
   const [$iconSuccess, $iconError] =
-    target.parentNode.querySelectorAll('.icon');
-  const $errorMessage = target.parentNode.querySelector('.error');
-  const inputType = inputStatus[target.name];
+    $target.parentNode.querySelectorAll('.icon');
+  const $errorMessage = $target.parentNode.querySelector('.error');
+  const inputType = inputStatus[$target.name];
 
   inputType.status =
-    target.name !== 'confirmPassword'
-      ? inputType.RegExp.test(target.value)
-      : isSamePassword(target.value);
+    $target.name !== 'confirmPassword'
+      ? inputType.RegExp.test($target.value)
+      : isSamePassword($target.value);
 
   $iconSuccess.classList.toggle('hidden', !inputType.status);
   $iconError.classList.toggle('hidden', inputType.status);
   $errorMessage.textContent = inputType.status ? '' : inputType.errorMessage;
 };
 
+// firebase storage image upload
 const uploadImage = () => {
   const ref = firebase.storage().ref();
   const file = document.querySelector('#signupProfileImage').files[0];
-  const name = +new Date() + '-' + file.name;
+
+  // firebase storage에 업로드 될 파일명 설정
+  const name = `${new Date()
+    .toISOString()
+    .substring(0, 10)
+    .replace(/-/g, '')}-${file.name}`;
+
   const metadata = {
     contentType: file.type,
   };
@@ -81,20 +92,16 @@ document.querySelector('form').oninput = e => {
   checkValidation(e.target);
 
   // 비밀번호 확인창이 입력된 상태에서 비밀번호 재입력시 비밀번호 확인 input 초기화
-  if (e.target.name === 'password') {
-    if ($confirmPassword.value !== '') {
-      $confirmPassword.value = '';
-      $confirmPassword.parentNode.querySelector('.error').textContent = '';
-      $confirmPassword.parentNode
-        .querySelector('.icon-success ')
-        .classList.add('hidden');
-      $confirmPassword.parentNode
-        .querySelector('.icon-error ')
-        .classList.add('hidden');
-    }
+  if (e.target.name === 'password' && $confirmPassword.value !== '') {
+    $confirmPassword.value = '';
+    $confirmPassword.parentNode.querySelector('.error').textContent = '';
+
+    $confirmPassword.parentNode.querySelectorAll('.icon').forEach($icon => {
+      $icon.classList.add('hidden');
+    });
   }
 
-  $signUpSubmit.disabled = !isSubmit(allInputOfForm);
+  $signUpSubmit.disabled = !isAbleToSubmit(allInputOfForm);
 };
 
 // 회원가입 버튼 클릭 시

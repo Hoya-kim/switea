@@ -2,12 +2,12 @@ const inputStatus = {
   email: {
     RegExp:
       /^[0-9a-zA-Z]([-.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/,
-    errorMessage: '올바른 아이디 형식을 입력하세요.',
+    errorMessage: '올바른 아이디 형식을 입력해주세요.',
     status: false,
   },
   password: {
     RegExp: /^[A-Za-z0-9]{8,16}$/,
-    errorMessage: '영문 또는 숫자를 8-16자 입력해 주세요.',
+    errorMessage: '영문 또는 숫자를 8-16자 입력해주세요.',
     status: false,
   },
   userName: {
@@ -31,10 +31,10 @@ const inputStatus = {
   },
 };
 
-const isSubmit = allInputOfForm =>
+const isAbleToSubmit = allInputOfForm =>
   [...allInputOfForm].every(inputType => inputStatus[inputType.name].status);
 
 const isSamePassword = confirmPassword =>
   confirmPassword === document.getElementById('signupPassword').value;
 
-export { inputStatus, isSubmit, isSamePassword };
+export { inputStatus, isAbleToSubmit, isSamePassword };

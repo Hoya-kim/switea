@@ -1,7 +1,7 @@
+import Swal from 'sweetalert2';
 import firebase from 'firebase/compat/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import Swal from 'sweetalert2';
-import { inputStatus, isSubmit } from './formValidation';
+import { inputStatus, isAbleToSubmit } from './utils/formValidation';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -21,24 +21,24 @@ const allInputOfForm = document.querySelectorAll('input');
 
 const getFormInfo = () => {
   const formInfo = {};
-  allInputOfForm.forEach(input => {
-    formInfo[input.name] = input.value;
+  allInputOfForm.forEach($input => {
+    formInfo[$input.name] = $input.value;
   });
   return formInfo;
 };
 
-const checkValidation = target => {
-  const $errorMessage = target.parentNode.querySelector('.error');
-  const inputType = inputStatus[target.name];
+const checkValidation = $target => {
+  const $errorMessage = $target.parentNode.querySelector('.error');
+  const inputType = inputStatus[$target.name];
 
-  inputType.status = inputType.RegExp.test(target.value);
+  inputType.status = inputType.RegExp.test($target.value);
   $errorMessage.textContent = inputType.status ? '' : inputType.errorMessage;
 };
 
 document.querySelector('form').oninput = e => {
   checkValidation(e.target);
 
-  $signinSubmit.disabled = !isSubmit(allInputOfForm);
+  $signinSubmit.disabled = !isAbleToSubmit(allInputOfForm);
 };
 
 // 로그인 버튼 클릭 시
