@@ -1,7 +1,7 @@
-// import { initializeApp } from 'firebase/app';
-import { initializeApp } from 'firebase/app';
+import Swal from 'sweetalert2';
+import firebase from 'firebase/compat/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import * as Joi from 'joi';
+import { inputStatus, isAbleToSubmit } from './utils/formValidation';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -14,44 +14,56 @@ const firebaseConfig = {
   measurementId: 'G-XN3HTBG4LC',
 };
 
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
+const $signinSubmit = document.querySelector('.signin-submit');
+const allInputOfForm = document.querySelectorAll('input');
 
-const formInfo = {};
-const errorMessage = {
-  email: '이메일 형식에 맞게 입력해 주세요.',
-  password: '비밀번호를 입력해주세요.',
+const getFormInfo = () => {
+  const formInfo = {};
+  allInputOfForm.forEach($input => {
+    formInfo[$input.name] = $input.value;
+  });
+  return formInfo;
 };
 
-const schema = Joi.object({
-  email: Joi.string().email({ tlds: { allow: false } }),
-  password: Joi.string().min(1),
-});
+const checkValidation = $target => {
+  const $errorMessage = $target.parentNode.querySelector('.error');
+  const inputType = inputStatus[$target.name];
+
+  inputType.status = inputType.RegExp.test($target.value);
+  $errorMessage.textContent = inputType.status ? '' : inputType.errorMessage;
+};
 
 document.querySelector('form').oninput = e => {
-  const $errorMessage = e.target.parentNode.lastElementChild;
-  formInfo[e.target.name] = e.target.value;
+  checkValidation(e.target);
 
-  $errorMessage.textContent = schema.validate(formInfo).error
-    ? errorMessage[e.target.name]
-    : '';
-
-  document.querySelector('.signin-submit').disabled =
-    schema.validate(formInfo).error;
+  $signinSubmit.disabled = !isAbleToSubmit(allInputOfForm);
 };
 
-document.querySelector('.signin-submit').onclick = async e => {
+// 로그인 버튼 클릭 시
+$signinSubmit.onclick = async e => {
   e.preventDefault();
-  const { email, password } = formInfo;
+  const { email, password } = getFormInfo();
 
   try {
-    const result = await signInWithEmailAndPassword(auth, email, password);
-    alert('로그인되었습니다!');
-  } catch (e) {
-    console.log(e.message);
+    await signInWithEmailAndPassword(auth, email, password);
+    Swal.fire({
+      title: '로그인 성공',
+      text: '로그인되었습니다!',
+      icon: 'success',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    }).then(() => {
+      window.location = '/mypage.html';
+    });
+  } catch (error) {
+    Swal.fire({
+      title: '로그인 실패',
+      text: '로그인에 실패했습니다. 아이디/비밀번호를 확인해주세요.',
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
   }
-};
-
-document.querySelector('.signup').onclick = () => {
-  window.location.href = '/signup.html';
 };
