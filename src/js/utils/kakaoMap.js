@@ -22,6 +22,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     config.headers.Authorization = `KakaoAK ${accessToken}`;
+    return config;
   },
   error => {
     /** @todo switch to sweetalert2 */
