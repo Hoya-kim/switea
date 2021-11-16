@@ -32,6 +32,7 @@ const $checkEmailDuplication = document.querySelector(
 );
 const $signupProfileImage = document.querySelector('#signupProfileImage');
 const $confirmPassword = document.querySelector('#signupConfirmPassword');
+const $form = document.querySelector('form');
 const allInputOfForm = document.querySelectorAll('.required');
 
 const getFormInfo = () => {
@@ -77,9 +78,10 @@ const uploadImage = () => {
   return ref.child(name).put(file, metadata);
 };
 
-// email 중복 검사 함수
-const checkEmailDuplication = async email => {
-  const result = await firebase
+// email 중복 검사 함수 => 리팩토링해보기
+const checkEmailDuplication = email =>
+  null ||
+  firebase
     .database()
     .ref()
     .child('users')
@@ -87,8 +89,6 @@ const checkEmailDuplication = async email => {
     .equalTo(email)
     .once('value')
     .then(snapshot => snapshot.val());
-  return result;
-};
 
 $signupProfileImage.onclick = e => {
   e.target.value = null;
@@ -107,8 +107,16 @@ $signupProfileImage.onchange = e => {
   reader.readAsDataURL(e.target.files[0]);
 };
 
+$form.onsubmit = e => e.preventDefault();
+
+$form.onkeydown = e => {
+  if (e.key !== 'Enter' || e.target === $signupEmail) return;
+  e.preventDefault();
+};
+
 // input 입력 event
-document.querySelector('form').oninput = e => {
+$form.oninput = e => {
+  e.preventDefault();
   if (e.target.name === 'profileImage') return;
   checkValidation(e.target);
 
@@ -136,14 +144,12 @@ $checkEmailDuplication.onclick = async e => {
   e.preventDefault();
   const result = await checkEmailDuplication($signupEmail.value);
 
-  if (!result) {
+  e.target.parentNode.querySelector('.error').textContent = result
+    ? '중복된 이메일입니다. 다른 이메일을 사용해 주세요.'
+    : '사용 가능한 이메일입니다. 가입을 진행해 주세요.';
+
+  if (!result)
     e.target.parentNode.querySelector('.error').classList.add('pass');
-    e.target.parentNode.querySelector('.error').textContent =
-      '사용 가능한 이메일입니다. 가입을 진행해주세요.';
-  } else {
-    e.target.parentNode.querySelector('.error').textContent =
-      '중복된 이메일입니다. 다른 이메일을 사용해 주세요.';
-  }
 };
 
 // 회원가입 버튼 클릭 시
