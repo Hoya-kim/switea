@@ -43,6 +43,23 @@
   .input-container {
     margin-top: 35px;
 
+    .check-email-duplication {
+      position: absolute;
+      right: 0;
+      background: $primary;
+      border: none;
+      padding: 7px 10px;
+      color: white;
+      border-radius: 50px;
+      font-size: 12px;
+      margin-bottom: 9px;
+      line-height: 1;
+
+      &:disabled {
+        background-color: $button-inactive;
+      }
+    }
+
     .icon {
       width: 28px;
       height: 28px;
@@ -66,8 +83,12 @@
       top: 100%;
       margin-top: 10px;
       left: 7px;
-      font-size: 16px;
+      font-size: 12px;
       color: $coral;
+
+      &.pass {
+        color: $green2;
+      }
     }
   }
 
