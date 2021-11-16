@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import * as pinMarker from '../../images/pinMarker.svg';
+
 const { kakao } = window;
 
 const BASE_URL = 'https://dapi.kakao.com/v2/local/search';
@@ -106,28 +108,76 @@ const searchByKeyword = async (
 };
 
 /**
- * @todo 카테고리로 검색
- * @param {string} category
+ * @description 지도에 마커를 표시하는 함수
+ * @param {Array} studies - Array of study object
  */
-const searchByCategory = async (coords = INITIAL_COORDS) => {
-  const cafeCode = 'CE7';
+const setMarkers = studies => {
+  const imageSize = new kakao.maps.Size(56, 56);
+  const markerImage = new kakao.maps.MarkerImage(pinMarker, imageSize);
 
-  // try {
-  //   const result = await service.get(
-  //     `${BASE_URL}/category.json?category\_group\_code=${cafeCode}&x=${coords.LNG}&y=${coords.LAT}&radius=3000`,
-  //   );
-  //   console.log(result);
-  // } catch (e) {
-  //   console.error(e);
-  // }
+  // 클러스터 마커 속성 설정
+  const clusterer = new kakao.maps.MarkerClusterer({
+    map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+    minLevel: 1, // 클러스터 할 최소 지도 레벨
+    styles: [
+      {
+        width: '50px',
+        height: '50px',
+        background: 'rgba(92, 198, 186, 0.85)',
+        borderRadius: '25px',
+        color: '#fff',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        lineHeight: '51px',
+      },
+    ],
+  });
+
+  // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+  const makeOverListener = (map, marker, infowindow) => () =>
+    infowindow.open(map, marker);
+
+  // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+  const makeOutListener = infowindow => () => infowindow.close();
+
+  const markers = Object.values(studies).map(
+    ({ title, location: { placeName, x: longitude, y: latitude } }) => {
+      // 마커에 표시할 인포윈도우를 생성합니다
+      const infowindow = new kakao.maps.InfoWindow({
+        content: `<div>${title}</div>`, // 인포윈도우에 표시할 내용
+      });
+
+      const marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(latitude, longitude),
+        image: markerImage,
+      });
+
+      kakao.maps.event.addListener(
+        marker,
+        'mouseover',
+        makeOverListener(map, marker, infowindow),
+      );
+
+      kakao.maps.event.addListener(
+        marker,
+        'mouseout',
+        makeOutListener(infowindow),
+      );
+
+      return marker;
+    },
+  );
+  // 마커 추가
+  clusterer.addMarkers(markers);
 };
 
 /**
- * @todo 지도에 마커를 표시하는 함수
+ * @todo 카테고리로 검색
  */
 
 /**
  * @todo 실시간 위치를 파악하는 함수
  */
 
-export { initMapView, setGeoMarker, searchByKeyword };
+export { initMapView, setGeoMarker, searchByKeyword, setMarkers };
