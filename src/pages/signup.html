@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Switea</title>
+    <link
+      href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="container">
@@ -17,11 +21,36 @@
       </header>
       <nav-component></nav-component>
       <main class="signup-container">
-        <!-- Each of Page -->
         <form>
           <fieldset>
             <legend>회원가입</legend>
+            <div class="input-container profileImage">
+              <label>프로필 이미지</label>
+              <div class="profile-image__container">
+                <div class="profile-image__stroke">
+                  <img
+                    src="../images/profile/profileImageDefault.svg"
+                    alt=""
+                    class="profile-image__view"
+                  />
+                </div>
+                <label for="signupProfileImage">
+                  <img
+                    class="profile-image__upload"
+                    src="../images/profile/profileImageUploadButton.svg"
+                    alt=""
+                /></label>
+              </div>
+              <input
+                type="file"
+                name="profileImage"
+                id="signupProfileImage"
+                class="hidden"
+                accept="image/*"
+              />
+            </div>
             <div class="input-container">
+              <button class="check-email-duplication" disabled>중복확인</button>
               <label for="signupEmail">이메일</label>
               <input
                 type="email"
@@ -29,8 +58,11 @@
                 id="signupEmail"
                 placeholder="switea@gmail.com"
                 aria-required="true"
+                class="required"
               />
-              <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <span class="error"></span>
             </div>
             <div class="input-container">
               <label for="signupPassword">비밀번호</label>
@@ -39,8 +71,11 @@
                 id="signupPassword"
                 name="password"
                 aria-required="true"
+                class="required"
               />
-              <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <div class="input-container">
               <label for="signupConfirmPassword">비밀번호 확인</label>
@@ -49,8 +84,11 @@
                 id="signupConfirmPassword"
                 name="confirmPassword"
                 aria-required="true"
+                class="required"
               />
-              <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <div class="input-container">
               <label for="signupName">이름</label>
@@ -59,8 +97,11 @@
                 id="signupName"
                 name="userName"
                 aria-required="true"
+                class="required"
               />
-              <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <div class="input-container">
               <label for="signupNickname">닉네임</label>
@@ -69,8 +110,11 @@
                 id="signupNickname"
                 name="nickname"
                 aria-required="true"
+                class="required"
               />
-              <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <div class="input-container">
               <label for="signupPhone">핸드폰 번호</label>
@@ -80,8 +124,11 @@
                 name="phoneNum"
                 placeholder="010-XXXX-XXXX"
                 aria-required="true"
+                class="required"
               />
-              <span class="input-container__comment"></span>
+              <i class="icon icon-success bx bxs-check-circle hidden"></i>
+              <i class="icon icon-error bx bxs-x-circle hidden"></i>
+              <div class="error"></div>
             </div>
             <button class="signup-submit button-submit" disabled>
               회원가입

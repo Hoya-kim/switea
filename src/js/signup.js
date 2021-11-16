@@ -1,14 +1,16 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import axios from 'axios';
-import * as Joi from 'joi';
+import Swal from 'sweetalert2';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/storage';
+import 'firebase/compat/database';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import {
+  inputStatus,
+  isAbleToSubmit,
+  isSamePassword,
+} from './utils/formValidation';
 
-const $inputConfirmPassword = document.querySelector(
-  'input[name = confirmPassword]',
-);
-
-const formInfo = {};
-
+// firebase setting
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
   authDomain: 'switea-19c19.firebaseapp.com',
@@ -20,73 +22,190 @@ const firebaseConfig = {
   measurementId: 'G-XN3HTBG4LC',
 };
 
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
 
-const errorMessage = {
-  email: '이메일 형식에 맞게 입력해 주세요.',
-  password: '숫자, 영문 대소문자를 조합하여 8-20자 이내로 입력해주세요.',
-  confirmPassword: '비밀번호를 동일하게 입력해 주세요.',
-  userName: '이름을 2-10자 이내로 입력해주세요.',
-  nickname: '한글, 알파벳, 숫자를 2-15글자로 입력해 주세요.',
-  phoneNum: '핸드폰 번호 형식을 확인해 주세요.',
+const $signupEmail = document.querySelector('#signupEmail');
+const $signUpSubmit = document.querySelector('.signup-submit');
+const $checkEmailDuplication = document.querySelector(
+  '.check-email-duplication',
+);
+const $signupProfileImage = document.querySelector('#signupProfileImage');
+const $confirmPassword = document.querySelector('#signupConfirmPassword');
+const $form = document.querySelector('form');
+const allInputOfForm = document.querySelectorAll('.required');
+
+const getFormInfo = () => {
+  const formInfo = {};
+  allInputOfForm.forEach($input => {
+    formInfo[$input.name] = $input.value;
+  });
+  return formInfo;
 };
 
-const schema = Joi.object({
-  email: Joi.string().email({ tlds: { allow: false } }),
-  password: Joi.string()
-    .pattern(/[a-zA-Z0-9]/)
-    .min(8)
-    .max(20),
-  confirmPassword: Joi.string().equal(Joi.ref('password')),
-  userName: Joi.string().min(2).max(10),
-  nickname: Joi.string().min(2).max(15),
-  phoneNum: Joi.string().pattern(
-    new RegExp('01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}'),
-  ),
-});
+// input의 유효성 검사
+const checkValidation = $target => {
+  const [$iconSuccess, $iconError] =
+    $target.parentNode.querySelectorAll('.icon');
+  const $errorMessage = $target.parentNode.querySelector('.error');
+  const inputType = inputStatus[$target.name];
 
-document.querySelector('form').oninput = e => {
-  const $errorMessage = e.target.parentNode.lastElementChild;
-  formInfo[e.target.name] = e.target.value;
-  const res = schema.validate(formInfo);
+  inputType.status =
+    $target.name !== 'confirmPassword'
+      ? inputType.RegExp.test($target.value)
+      : isSamePassword($target.value);
 
-  $errorMessage.textContent = res.error ? errorMessage[e.target.name] : '';
+  $iconSuccess.classList.toggle('hidden', !inputType.status);
+  $iconError.classList.toggle('hidden', inputType.status);
+  $errorMessage.textContent = inputType.status ? '' : inputType.errorMessage;
+};
 
-  if (e.target.name === 'password') {
-    if ($inputConfirmPassword.value !== '') {
-      $inputConfirmPassword.value = '';
-      $inputConfirmPassword.parentNode.lastChild.textContent = '';
-    }
+// firebase storage image upload
+const uploadImage = () => {
+  const ref = firebase.storage().ref();
+  const file = $signupProfileImage.files[0];
+
+  // firebase storage에 업로드 될 파일명 설정
+  const name = `${new Date()
+    .toISOString()
+    .substring(0, 10)
+    .replace(/-/g, '')}-${file.name}`;
+
+  const metadata = {
+    contentType: file.type,
+  };
+
+  return ref.child(name).put(file, metadata);
+};
+
+// email 중복 검사 함수 => 리팩토링해보기
+const checkEmailDuplication = async email =>
+  Boolean(
+    await firebase
+      .database()
+      .ref()
+      .child('users')
+      .orderByChild('email')
+      .equalTo(email)
+      .once('value')
+      .then(snapshot => snapshot.val()),
+  );
+
+$signupProfileImage.onclick = e => {
+  e.target.value = null;
+};
+
+// 프로필 이미지 파일 선택
+$signupProfileImage.onchange = e => {
+  if (!e.target.matches('input')) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    document.querySelector('.profile-image__view').src = reader.result;
+  };
+
+  reader.readAsDataURL(e.target.files[0]);
+};
+
+$form.onsubmit = e => e.preventDefault();
+
+$form.onkeydown = e => {
+  if (e.key !== 'Enter' || e.target === $signupEmail) return;
+  e.preventDefault();
+};
+
+// input 입력 event
+$form.oninput = e => {
+  e.preventDefault();
+  if (e.target.name === 'profileImage') return;
+  checkValidation(e.target);
+
+  // 비밀번호 확인창이 입력된 상태에서 비밀번호 재입력시 비밀번호 확인 input 초기화
+  if (e.target.name === 'password' && $confirmPassword.value !== '') {
+    $confirmPassword.value = '';
+    $confirmPassword.parentNode.querySelector('.error').textContent = '';
+
+    $confirmPassword.parentNode.querySelectorAll('.icon').forEach($icon => {
+      $icon.classList.add('hidden');
+    });
   }
 
-  document.querySelector('.signup-submit').disabled = res.error;
+  $signUpSubmit.disabled = !isAbleToSubmit(allInputOfForm);
 };
 
-document.querySelector('.signup-submit').onclick = async e => {
+$signupEmail.oninput = e => {
+  e.target.parentNode.querySelector('.error').classList.remove('pass');
+  checkValidation(e.target); // 팀원들이랑 상의하기
+  $checkEmailDuplication.disabled = !inputStatus.email.status;
+};
+
+// 이메일 중복확인 버튼 클릭 시
+$checkEmailDuplication.onclick = async e => {
+  e.preventDefault();
+  const result = await checkEmailDuplication($signupEmail.value);
+
+  e.target.parentNode.querySelector('.error').textContent = result
+    ? '중복된 이메일입니다. 다른 이메일을 사용해 주세요.'
+    : '사용 가능한 이메일입니다. 가입을 진행해 주세요.';
+
+  if (!result)
+    e.target.parentNode.querySelector('.error').classList.add('pass');
+};
+
+// 회원가입 버튼 클릭 시
+$signUpSubmit.onclick = async e => {
   e.preventDefault();
 
-  const { userName, phoneNum, nickname } = formInfo;
+  const { email, password, userName, phoneNum, nickname } = getFormInfo();
 
   try {
-    const result = await createUserWithEmailAndPassword(
-      auth,
-      formInfo.email,
-      formInfo.password,
-    );
+    await createUserWithEmailAndPassword(auth, email, password);
+    // 프로필 이미지 firebase storage에 저장
+    const snapshot = await uploadImage();
+    const profileImage = await snapshot.ref.getDownloadURL();
 
     await axios.put(
       `https://switea-19c19-default-rtdb.firebaseio.com/users/${auth.currentUser.uid}.json`,
       {
+        email,
         userName,
         phoneNum,
         nickname,
+        profileImage,
       },
     );
 
-    alert('성공적으로 회원가입 되었습니다!');
-    window.location.href = '/signin.html';
-  } catch (e) {
-    console.log(e.message);
+    Swal.fire({
+      title: '회원가입 성공',
+      text: '성공적으로 회원가입 되었습니다. 로그인 페이지로 이동합니다.',
+      icon: 'success',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    }).then(() => {
+      window.location = '/signin.html';
+    });
+  } catch (error) {
+    const errorCode = error.code;
+    switch (errorCode) {
+      case 'auth/email-already-in-use':
+        Swal.fire({
+          title: '회원가입 실패',
+          text: '중복된 아이디 입니다.',
+          icon: 'error',
+          showCancelButton: false,
+          confirmButtonText: '확인',
+        });
+        break;
+      default:
+        Swal.fire({
+          title: '회원가입 실패',
+          text: '회원가입이 정상적으로 처리되지 않았습니다. 다시 시도해주세요.',
+          icon: 'error',
+          showCancelButton: false,
+          confirmButtonText: '확인',
+        });
+        break;
+    }
   }
 };
