@@ -1,10 +1,8 @@
-const $tags = document.querySelector('.recruit-container .tags');
-
 let tags = [];
 
 const getTags = () => tags;
 
-const setTag = content => {
+const setTag = (content, $tags) => {
   const $tag = document.createElement('li');
   const $tagDelete = document.createElement('button');
   $tag.className = 'tag';
@@ -17,12 +15,14 @@ const setTag = content => {
   tags = [...tags, content];
 };
 
-const addTag = (e, maxTagLength, alertMessage) => {
+const addTag = (e, TAG_CONSTANTS, $tags) => {
   if (e.key !== 'Enter') return;
   const content = e.target.value.trim();
 
   if (content) {
-    getTags().length < maxTagLength ? setTag(content) : alert(alertMessage);
+    getTags().length < TAG_CONSTANTS.MAX_LENGTH
+      ? setTag(content, $tags)
+      : alert(TAG_CONSTANTS.ALERT_MESSAGE);
   }
   e.target.value = '';
 };
@@ -33,8 +33,6 @@ const removeTag = e => {
   const allTag = document.querySelectorAll('.tags li');
   getTags().splice([...allTag].indexOf(e.target.closest('li')), 1);
   e.target.closest('li').remove();
-
-  console.log(getTags());
 };
 
 export { getTags, addTag, removeTag };
