@@ -181,7 +181,7 @@ $location.onkeydown = async e => {
   const $searchListFragment = document.createDocumentFragment();
 
   $locationModal.style.display = 'block';
-  document.body.classList.add('active');
+  document.body.classList.add('non-scroll');
 
   if (documents.length > 0) {
     documents.forEach(($el, index) => {
@@ -214,7 +214,7 @@ $locationModal.onclick = e => {
     $location.value = '';
     $locationModal.style.display = 'none';
     $locationModalList.innerHTML = '';
-    document.body.classList.remove('active');
+    document.body.classList.remove('non-scroll');
   }
 
   if (e.target.matches('.location-modal__search-list *')) {
@@ -230,7 +230,7 @@ $locationModal.onclick = e => {
     $location.value = documents[itemIndex].place_name;
     $locationModal.style.display = 'none';
     $locationModalList.innerHTML = '';
-    document.body.classList.remove('active');
+    document.body.classList.remove('non-scroll');
   }
 };
 
