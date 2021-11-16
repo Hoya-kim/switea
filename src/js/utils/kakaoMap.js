@@ -22,9 +22,9 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     config.headers.Authorization = `KakaoAK ${accessToken}`;
-    return config;
   },
   error => {
+    /** @todo switch to sweetalert2 */
     console.log(error);
   },
 );
@@ -103,6 +103,7 @@ const searchByKeyword = async (
     const { data } = await service.get(url);
     return data;
   } catch (e) {
+    /** @todo switch to sweetalert2 */
     console.error(e);
   }
 };
@@ -110,8 +111,9 @@ const searchByKeyword = async (
 /**
  * @description 지도에 마커를 표시하는 함수
  * @param {Array} studies - Array of study object
+ * @param {function} clickEventHandler - marker click event에 바인딩될 함수
  */
-const setMarkers = studies => {
+const setMarkers = (studies, clickEventHandler) => {
   const imageSize = new kakao.maps.Size(56, 56);
   const markerImage = new kakao.maps.MarkerImage(pinMarker, imageSize);
 
@@ -120,6 +122,7 @@ const setMarkers = studies => {
     map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
     averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
     minLevel: 1, // 클러스터 할 최소 지도 레벨
+    disableClickZoom: true, // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정
     styles: [
       {
         width: '50px',
@@ -134,40 +137,36 @@ const setMarkers = studies => {
     ],
   });
 
-  // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
-  const makeOverListener = (map, marker, infowindow) => () =>
-    infowindow.open(map, marker);
+  if (clickEventHandler) {
+    kakao.maps.event.addListener(clusterer, 'clusterclick', cluster => {
+      map.panTo(cluster.getCenter()); // 클러스터 중심으로 지도 이동
 
-  // 인포윈도우를 닫는 클로저를 만드는 함수입니다
-  const makeOutListener = infowindow => () => infowindow.close();
+      const clusteredData = cluster
+        .getMarkers()
+        .map(({ studyData }) => studyData);
+      clickEventHandler(clusteredData);
+    });
+  }
 
-  const markers = Object.values(studies).map(
-    ({ title, location: { placeName, x: longitude, y: latitude } }) => {
-      // 마커에 표시할 인포윈도우를 생성합니다
-      const infowindow = new kakao.maps.InfoWindow({
-        content: `<div>${title}</div>`, // 인포윈도우에 표시할 내용
-      });
+  const markers = Object.entries(studies).map(([id, study]) => {
+    const position = new kakao.maps.LatLng(study.location.y, study.location.x);
+    const marker = new kakao.maps.Marker({
+      position,
+      image: markerImage,
+    });
 
-      const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(latitude, longitude),
-        image: markerImage,
-      });
+    marker.studyData = { id, study };
 
-      kakao.maps.event.addListener(
-        marker,
-        'mouseover',
-        makeOverListener(map, marker, infowindow),
-      );
+    if (!clickEventHandler) return marker;
 
-      kakao.maps.event.addListener(
-        marker,
-        'mouseout',
-        makeOutListener(infowindow),
-      );
+    kakao.maps.event.addListener(marker, 'click', () => {
+      map.panTo(position); // 마커 중심으로 지도 이동
+      clickEventHandler([{ id, study }]);
+    });
 
-      return marker;
-    },
-  );
+    return marker;
+  });
+
   // 마커 추가
   clusterer.addMarkers(markers);
 };

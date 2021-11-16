@@ -36,9 +36,11 @@ export default class navigation extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         nav {
+          box-sizing: border-box;
           position: fixed;
           width: 100%;
-          height: 69px;
+          height: 74px;
+          padding-top: 5px;
           bottom: 0;
           left: 50%;
           transform: translateX(-50%);
