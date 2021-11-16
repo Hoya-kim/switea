@@ -3,8 +3,10 @@
 @import '~flatpickr/dist/themes/light.css';
 
 body {
-  // @TODO : Change to color variable
-  background-color: #ccc;
+  background-color: rgba($primary, 0.1);
+}
+body.non-scroll {
+  overflow: hidden;
 }
 
 .container {

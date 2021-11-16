@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import axios from 'axios';
 import flatpickr from 'flatpickr';
+import { searchByKeyword } from './utils/kakaoMap';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -20,10 +21,22 @@ const $tags = document.querySelector('.recruit-container .tags');
 const $addTags = document.querySelector('.recruit-container .add-tags');
 const $location = document.getElementById('location');
 const $locationModal = document.querySelector('.location-modal__wrap');
+const $locationModalList = document.querySelector(
+  '.location-modal__search-list',
+);
 const $datepicker = document.querySelector('.datepicker');
 const $capacity = document.querySelector('.capacity');
 
 let tags = [];
+let documents;
+const location = {
+  id: '',
+  roadAddressName: '',
+  addressName: '',
+  placeName: '',
+  x: '',
+  y: '',
+};
 
 flatpickr($datepicker, {
   mode: 'range',
@@ -97,7 +110,6 @@ const recruitRequest = async e => {
   const {
     title: { value: title },
     type: { value: type },
-    location: { value: location },
     date: { value: date },
     minCapacity: { value: minCapacity },
     maxCapacity: { value: maxCapacity },
@@ -113,6 +125,7 @@ const recruitRequest = async e => {
       `https://switea-19c19-default-rtdb.firebaseio.com/studies.json`,
       {
         creator: 'user ID',
+        nickName: '닉네임',
         title,
         type,
         tags,
@@ -130,7 +143,7 @@ const recruitRequest = async e => {
 
     if (status === 200) {
       alert('등록 성공');
-      window.location.href = './list.html';
+      // window.location.href = './list.html';
     }
   } catch (e) {
     console.log(e);
@@ -158,19 +171,67 @@ $tags.onclick = e => {
   e.target.closest('li').remove();
 };
 
-$location.onkeydown = e => {
+$location.onkeydown = async e => {
   if (e.key !== 'Enter') return;
+  e.target.blur();
+
+  const result = await searchByKeyword(e.target.value);
+  documents = result.documents;
+
+  const $searchListFragment = document.createDocumentFragment();
+
   $locationModal.style.display = 'block';
+  document.body.classList.add('non-scroll');
+
+  if (documents.length > 0) {
+    documents.forEach(($el, index) => {
+      const $searchListItem = document.createElement('li');
+      $searchListItem.dataset.index = index;
+      $searchListItem.className = 'location-modal__search-list--item';
+      $searchListItem.innerHTML = `
+        <p class="place-name">${$el.place_name}</p>
+        <p class="road-address-name">${
+          $el.road_address_name || $el.address_name
+        }</p>
+      `;
+      $searchListFragment.append($searchListItem);
+    });
+  } else {
+    const $searchListItem = document.createElement('li');
+    $searchListItem.className = 'no-result';
+    $searchListItem.textContent = '검색 결과가 없습니다.';
+    $searchListFragment.append($searchListItem);
+  }
+
+  $locationModalList.append($searchListFragment);
 };
 
 $locationModal.onclick = e => {
   if (
-    !e.target.classList.contains('location-modal--close') &&
-    !e.target.classList.contains('location-modal__bg')
-  )
-    return;
-  $locationModal.style.display = 'none';
-  $location.value = '';
+    e.target.classList.contains('location-modal--close') ||
+    e.target.classList.contains('location-modal__bg')
+  ) {
+    $location.value = '';
+    $locationModal.style.display = 'none';
+    $locationModalList.innerHTML = '';
+    document.body.classList.remove('non-scroll');
+  }
+
+  if (e.target.matches('.location-modal__search-list *')) {
+    const itemIndex = e.target.closest('li').dataset.index;
+
+    location.id = documents[itemIndex].id;
+    location.addressName = documents[itemIndex].address_name;
+    location.roadAddressName = documents[itemIndex].road_address_name;
+    location.placeName = documents[itemIndex].place_name;
+    location.x = documents[itemIndex].x;
+    location.y = documents[itemIndex].y;
+
+    $location.value = documents[itemIndex].place_name;
+    $locationModal.style.display = 'none';
+    $locationModalList.innerHTML = '';
+    document.body.classList.remove('non-scroll');
+  }
 };
 
 $capacity.oninput = e => {

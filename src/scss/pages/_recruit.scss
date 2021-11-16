@@ -79,17 +79,23 @@
     }
 
     &__search-list {
+      max-height: 60vh;
+      overflow-y: auto;
+      border-top: 1px solid $border;
+      border-bottom: 1px solid $border;
+
       .no-result {
-        padding: 20px 0;
+        padding: 26px 0;
         text-align: center;
         font-size: 18px;
       }
 
       &--item {
-        margin-bottom: 30px;
+        padding: 15px;
+        border-bottom: 1px solid $border;
 
         &:last-child {
-          margin-bottom: 0;
+          border-bottom: 0;
         }
 
         &:hover {
