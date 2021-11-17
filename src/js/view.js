@@ -81,27 +81,31 @@ const render = () => {
 };
 
 const getRecruit = async () => {
-  const result = await get(child(dbRef, `studies/${id}`))
-    .then(snapshot => {
-      if (snapshot.exists()) {
-        return snapshot;
-      }
+  try {
+    const snapshot = await get(child(dbRef, `studies/${id}`));
+    if (snapshot.exists()) {
+      recruitData = snapshot.val();
+      render();
+      return;
+    }
 
-      Swal.fire({
-        text: '해당 게시글을 찾을 수 없습니다.',
-        icon: 'error',
-        showCancelButton: false,
-        confirmButtonText: '확인',
-      }).then(() => {
-        window.location.href = './list.html';
-      });
-    })
-    .catch(error => {
-      console.error(error);
+    Swal.fire({
+      text: '해당 게시글을 찾을 수 없습니다.',
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    }).then(() => {
+      window.location.href = './list.html';
     });
-
-  recruitData = result.val();
-  render();
+  } catch (error) {
+    Swal.fire({
+      title: '에러 발생',
+      text: error,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
+  }
 };
 
 window.addEventListener('DOMContentLoaded', getRecruit);
