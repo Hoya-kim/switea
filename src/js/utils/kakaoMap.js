@@ -51,6 +51,26 @@ const options = {
 let map; // 지도
 
 /**
+ * @description Move to the center by kakao.map.LatLng
+ * @param {kakao.maps.LatLng} kakaoLatLng - coordinates for be centered
+ * @param {boolean} isSmoothly - move smoothly or not
+ */
+const moveCenter = (kakaoLatLng, isSmoothly = true) => {
+  isSmoothly ? map.panTo(kakaoLatLng) : map.setCenter(kakaoLatLng);
+};
+
+/**
+ * @description Move to the center by coords
+ * @param {number} latitude - coordinates latitude for be centered
+ * @param {number} longitude - coordinates longitude for be centered
+ * @param {boolean} isSmoothly - move smoothly or not
+ */
+const moveCenterByCoords = (latitude, longitude, isSmoothly = true) => {
+  const locPosition = new kakao.maps.LatLng(latitude, longitude);
+  isSmoothly ? map.panTo(locPosition) : map.setCenter(locPosition);
+};
+
+/**
  * @description 현재 위치를 표시하는 마커 생성
  */
 const setGeoMarker = () => {
@@ -60,12 +80,11 @@ const setGeoMarker = () => {
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords; // 위도, 경도
 
-      const locPosition = new kakao.maps.LatLng(latitude, longitude); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-      map.panTo(locPosition);
+      moveCenterByCoords(latitude, longitude); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
 
       const geoMarker = `<div class="marker"><div class="dot"></div><div class="pulse"></div></div>`;
       const currentGeoMarker = new kakao.maps.CustomOverlay({
-        position: locPosition,
+        position: new kakao.maps.LatLng(latitude, longitude),
         content: geoMarker,
         map,
       });
@@ -164,7 +183,7 @@ const setMarkers = (studies, clickEventHandler) => {
 
   if (clickEventHandler) {
     kakao.maps.event.addListener(clusterer, 'clusterclick', cluster => {
-      map.panTo(cluster.getCenter()); // 클러스터 중심으로 지도 이동
+      moveCenter(cluster.getCenter()); // 클러스터 중심으로 지도 이동
 
       const clusteredData = cluster
         .getMarkers()
@@ -185,7 +204,7 @@ const setMarkers = (studies, clickEventHandler) => {
     if (!clickEventHandler) return marker;
 
     kakao.maps.event.addListener(marker, 'click', () => {
-      map.panTo(position); // 마커 중심으로 지도 이동
+      moveCenter(position); // 마커 중심으로 지도 이동
       clickEventHandler([{ id, study }]);
     });
 
@@ -207,6 +226,7 @@ const setMarkers = (studies, clickEventHandler) => {
 export {
   initMapView,
   setGeoMarker,
+  moveCenterByCoords,
   searchByKeyword,
   searchByAddress,
   setMarkers,
