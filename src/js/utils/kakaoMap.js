@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 import * as pinMarker from '../../images/pinMarker.svg';
 
@@ -25,8 +26,13 @@ service.interceptors.request.use(
     return config;
   },
   error => {
-    /** @todo switch to sweetalert2 */
-    console.log(error);
+    Swal.fire({
+      title: '네트워크 에러',
+      text: error,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
   },
 );
 
@@ -122,9 +128,14 @@ const searchByKeyword = async (
     const url = `${BASE_URL}/keyword.json?query=${query}&page=${page}&size=${size}&sort=${sort}`;
     const { data } = await service.get(url);
     return data;
-  } catch (e) {
-    /** @todo switch to sweetalert2 */
-    console.error(e);
+  } catch (error) {
+    Swal.fire({
+      title: '네트워크 에러',
+      text: error,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
   }
 };
 
@@ -146,9 +157,14 @@ const searchByAddress = async (
     const url = `${BASE_URL}/address.json?query=${query}&page=${page}&size=${size}&analyze_type=${analyzeType}`;
     const { data } = await service.get(url);
     return data;
-  } catch (e) {
-    /** @todo switch to sweetalert2 */
-    console.error(e);
+  } catch (error) {
+    Swal.fire({
+      title: '네트워크 에러',
+      text: error,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
   }
 };
 
