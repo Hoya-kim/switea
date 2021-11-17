@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { initializeApp } from 'firebase/app';
 import axios from 'axios';
 import { getDatabase, ref, child, get, update } from 'firebase/database';
@@ -65,8 +66,14 @@ const recruitRequest = async e => {
 
   const addStudy = async user => {
     if (!user) {
-      alert('로그인이 필요합니다.');
-      window.location.href = '/signin.html';
+      Swal.fire({
+        text: '로그인이 필요한 페이지입니다.',
+        icon: 'error',
+        showCancelButton: false,
+        confirmButtonText: '확인',
+      }).then(() => {
+        window.location = './signin.html';
+      });
     }
 
     const dbRef = ref(getDatabase());
@@ -106,9 +113,15 @@ const recruitRequest = async e => {
       writeUserData(result.data.name);
 
       if (result.status === 200) {
-        alert('등록 성공');
-        console.log('result', result);
-        // window.location.href = './list.html';
+        Swal.fire({
+          title: '등록 성공',
+          text: '모집글이 정상적으로 등록되었습니다.',
+          icon: 'success',
+          showCancelButton: false,
+          confirmButtonText: '확인',
+        }).then(() => {
+          window.location = './list.html';
+        });
       }
     } catch (e) {
       console.error(e);
@@ -216,7 +229,12 @@ $form.onsubmit = e => {
   valueList = [...valueList, document.querySelector('form textarea')];
 
   if (!valueList.every($el => $el.value !== '')) {
-    alert('모든 항목을 입력해주세요');
+    Swal.fire({
+      text: '모든 항목을 입력해주세요.',
+      icon: 'warning',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
     return;
   }
 
