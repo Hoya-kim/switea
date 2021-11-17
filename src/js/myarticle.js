@@ -15,6 +15,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
+const $articleCount = document.querySelector('.article-count');
 
 const getMyArticle = async uid => {
   const studies = await firebase
@@ -28,12 +29,14 @@ const getMyArticle = async uid => {
   return studies;
 };
 
-const renderStudyList = studies => {
+// 내가 쓴 모집글 render
+const renderStudyList = studylist => {
   const $studyList = document.querySelector('.study-list');
   let studyListHTML = '';
-  const studylists = Object.values(studies);
 
-  studylists.forEach(studyData => {
+  $articleCount.textContent = `내가 쓴 모집글 ${studylist.length}개`;
+
+  studylist.forEach(studyData => {
     const startDate = new Date(studyData.startDate);
     const endDate = new Date(studyData.endDate);
 
@@ -69,7 +72,17 @@ window.addEventListener(
     if (user) {
       const { uid } = user;
       const studies = await getMyArticle(uid);
-      renderStudyList(studies);
+      document
+        .querySelector('.myarticle-container')
+        .classList.toggle('none', !studies);
+
+      // 작성한 모집글이 없는 경우
+      if (!studies) {
+        $articleCount.textContent = `작성한 모집글이 없습니다.
+          첫 번째 모집글을 작성해보세요🙂`;
+      } else {
+        renderStudyList(Object.values(studies));
+      }
     } else {
       alert('로그인이 필요합니다.');
       window.location.href = '/signin.html';
