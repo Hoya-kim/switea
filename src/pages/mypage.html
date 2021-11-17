@@ -4,7 +4,37 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Switea</title>
   </head>
-  <body></body>
+  <body>
+    <div class="container mypage-wrapper">
+      <h1 class="logo a11y-hidden">
+        <a href="#">Switea</a>
+      </h1>
+      <header class="header">
+        <h2 class="title">마이페이지</h2>
+        <button type="button" class="back">뒤로 가기</button>
+      </header>
+      <nav-component></nav-component>
+      <main class="mypage-container">
+        <div class="info-container">
+          <div class="info-container__img-stroke">
+            <img
+              src="../images/profile/user2_profile.png"
+              alt=""
+              class="info-container__img-photo"
+            />
+          </div>
+          <span class="info-container__nickname">민횽이님</span>
+        </div>
+        <ul class="menu-container">
+          <li><a href="" class="edit">내 정보 수정</a></li>
+          <li><a href="/myarticle.html" class="article">내가 쓴 모집글</a></li>
+          <li><a href="" class="bookmark">찜한 글</a></li>
+          <li><a href="" class="cs">고객센터</a></li>
+        </ul>
+        <button class="logout button-submit" disabled>로그아웃</button>
+      </main>
+    </div>
+  </body>
 </html>
