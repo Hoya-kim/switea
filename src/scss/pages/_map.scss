@@ -10,9 +10,20 @@
   position: relative;
   height: calc(100vh - 74px);
 
+  .search__input-container:focus-within > input {
+    outline-offset: 5px;
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: $primary;
+  }
+
   .toggle-button-container {
     width: 25%;
     min-width: 130px;
+  }
+
+  input {
+    outline: none;
   }
 
   form {

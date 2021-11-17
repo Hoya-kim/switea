@@ -1,8 +1,12 @@
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import * as kakaoMap from './utils/kakaoMap';
 
+// DOMElements
 const $mainArea = document.getElementById('map');
 const $mapContainer = document.createElement('div');
+const $searchInput = document.getElementById('searchInput');
+
 $mapContainer.classList.add('kakaoMap');
 $mainArea.appendChild($mapContainer);
 kakaoMap.initMapView($mapContainer);
@@ -49,10 +53,40 @@ const renderMarkered = studyList => {
     : $infoContainer.classList.remove('multiple');
 };
 
-(async () => {
+// Event Listeners
+window.addEventListener('DOMContentLoaded', async () => {
   /** @todo get list of item, isActive === "true" */
   const { data } = await axios.get(
     `https://switea-19c19-default-rtdb.firebaseio.com/studies.json`,
   );
   kakaoMap.setMarkers(data, renderMarkered);
-})();
+});
+
+$searchInput.onkeydown = async e => {
+  if (e.isComposing || e.key !== 'Enter') return;
+  e.preventDefault();
+
+  try {
+    const { documents } = await kakaoMap.searchByAddress(e.target.value);
+
+    if (!documents.length) {
+      Swal.fire({
+        title: '위치 검색 실패',
+        html: `위치 검색에 실패하였습니다.<br>"${e.target.value}"에 해당하는 검색결과가 없습니다.<br>올바른 지역을 입력해 주세요.`,
+        icon: 'error',
+        showCancelButton: false,
+        confirmButtonText: '확인',
+      });
+      return;
+    }
+    kakaoMap.moveCenterByCoords(documents[0].y, documents[0].x);
+  } catch (error) {
+    Swal.fire({
+      title: '에러 발생',
+      text: error,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
+  }
+};
