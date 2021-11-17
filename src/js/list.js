@@ -38,10 +38,12 @@ let totalStudyListData = {};
 const renderStudyList = studyListData => {
   const $studyList = document.querySelector('.study-list');
   let studyListHTML = '';
+  let profileImageUrls = [];
 
   studyListData.forEach(studyData => {
     const startDate = new Date(studyData.startDate);
     const endDate = new Date(studyData.endDate);
+    profileImageUrls = [...profileImageUrls, studyData.profileImage];
 
     const locationTagHTML = studyData.location
       ? `<li class="tag location">#${studyData.location.placeName}</li>`
@@ -71,6 +73,11 @@ const renderStudyList = studyListData => {
     </li>`;
   });
   $studyList.innerHTML = studyListHTML;
+  profileImageUrls.forEach((url, idx) => {
+    $studyList.children[idx].querySelector(
+      '.study-list__profile-image',
+    ).style.backgroundImage = `url(${url})`;
+  });
 };
 
 const toggleFilterActivation = () => {
