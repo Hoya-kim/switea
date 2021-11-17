@@ -73,11 +73,12 @@
             <div class="input-container">
               <label for="location">스터디 장소 검색</label>
               <input
-                type="search"
+                type="text"
                 id="location"
                 name="location"
                 aria-required="true"
                 class="location input--border"
+                readonly
               />
             </div>
             <div class="input-container">
@@ -145,16 +146,28 @@
         <div class="location-modal__wrap">
           <div class="location-modal__bg"></div>
           <div class="location-modal__contents">
-            <h3 class="location-modal__title">장소 검색 결과</h3>
+            <!-- <h3 class="location-modal__title">장소 검색 결과</h3> -->
+            <div class="input-container">
+              <label for="modalSearch">스터디 장소 검색</label>
+              <input
+                type="search"
+                id="modalSearch"
+                class="location input--border"
+              />
+            </div>
             <ul class="location-modal__search-list">
               <!-- <li class="no-result">검색 결과가 없습니다.</li>
               <li class="location-modal__search-list--item">
                 <p class="place-name">강남역</p>
-                <p class="road-address-name">서울특별시 강남구 역삼동 858-4번지</p>
+                <p class="road-address-name">
+                  서울특별시 강남구 역삼동 858-4번지
+                </p>
               </li>
               <li class="location-modal__search-list--item">
                 <p class="place-name">강남역</p>
-                <p class="road-address-name">서울특별시 강남구 역삼동 858-4번지</p>
+                <p class="road-address-name">
+                  서울특별시 강남구 역삼동 858-4번지
+                </p>
               </li> -->
             </ul>
             <button type="button" class="location-modal--close">닫기</button>
