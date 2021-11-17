@@ -1,6 +1,10 @@
 import { initializeApp } from 'firebase/app';
 import axios from 'axios';
-import flatpickr from 'flatpickr';
+import { getDatabase, ref, child, get, update } from 'firebase/database';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { searchByKeyword } from './utils/kakaoMap';
+import bindFlatpicker from './components/datepicker';
+import { getTags, addTag, removeTag } from './utils/tag';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -14,88 +18,41 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-const $form = document.querySelector('.recruit-container form');
-const $tags = document.querySelector('.recruit-container .tags');
-const $addTags = document.querySelector('.recruit-container .add-tags');
+const auth = getAuth();
 const $datepicker = document.querySelector('.datepicker');
-const $capacity = document.querySelector('.capacity');
+bindFlatpicker($datepicker);
 
-let tags = [];
-
-flatpickr($datepicker, {
-  mode: 'range',
-  dateFormat: 'Y.m.d',
-  minDate: 'today',
-  locale: {
-    weekdays: {
-      shorthand: ['일', '월', '화', '수', '목', '금', '토'],
-      longhand: [
-        '일요일',
-        '월요일',
-        '화요일',
-        '수요일',
-        '목요일',
-        '금요일',
-        '토요일',
-      ],
-    },
-
-    months: {
-      shorthand: [
-        '1월',
-        '2월',
-        '3월',
-        '4월',
-        '5월',
-        '6월',
-        '7월',
-        '8월',
-        '9월',
-        '10월',
-        '11월',
-        '12월',
-      ],
-      longhand: [
-        '1월',
-        '2월',
-        '3월',
-        '4월',
-        '5월',
-        '6월',
-        '7월',
-        '8월',
-        '9월',
-        '10월',
-        '11월',
-        '12월',
-      ],
-    },
-
-    ordinal: () => '일',
-
-    rangeSeparator: ' ~ ',
-  },
-});
-
-const addTag = content => {
-  const $tag = document.createElement('li');
-  const $tagDelete = document.createElement('button');
-  $tag.className = 'tag';
-  $tag.textContent = `#${content}`;
-  $tagDelete.className = 'tag-delete';
-  $tagDelete.textContent = 'X';
-  $tag.appendChild($tagDelete);
-  $tags.appendChild($tag);
-
-  tags = [...tags, content];
+const TAG_CONSTANTS = {
+  MAX_LENGTH: 10,
+  ALERT_MESSAGE: '태그는 10개까지 등록 가능합니다.',
 };
 
+const $form = document.querySelector('.recruit-container form');
+const $addTags = document.querySelector('.recruit-container .add-tags');
+const $tags = document.querySelector('.recruit-container .tags');
+const $location = document.getElementById('location');
+const $modalSearch = document.getElementById('modalSearch');
+const $locationModal = document.querySelector('.location-modal__wrap');
+const $locationModalList = document.querySelector(
+  '.location-modal__search-list',
+);
+const $capacity = document.querySelector('.capacity');
+
+let documents;
+const location = {
+  id: '',
+  roadAddressName: '',
+  addressName: '',
+  placeName: '',
+  x: '',
+  y: '',
+};
+
+// function
 const recruitRequest = async e => {
   const {
     title: { value: title },
     type: { value: type },
-    location: { value: location },
     date: { value: date },
     minCapacity: { value: minCapacity },
     maxCapacity: { value: maxCapacity },
@@ -106,54 +63,141 @@ const recruitRequest = async e => {
   const startDate = date.split('~')[0];
   const endDate = date.split('~').length > 1 ? date.split('~')[1] : startDate;
 
-  try {
-    const { status } = await axios.post(
-      `https://switea-19c19-default-rtdb.firebaseio.com/studies.json`,
-      {
-        creator: 'user ID',
-        title,
-        type,
-        tags,
-        location,
-        createDate: Date.now(),
-        startDate,
-        endDate,
-        minCapacity,
-        maxCapacity,
-        contact,
-        content,
-        isActive: true,
-      },
-    );
-
-    if (status === 200) {
-      alert('등록 성공');
-      window.location.href = './list.html';
+  const addStudy = async user => {
+    if (!user) {
+      alert('로그인이 필요합니다.');
+      window.location.href = '/signin.html';
     }
-  } catch (e) {
-    console.log(e);
-  }
+
+    const dbRef = ref(getDatabase());
+
+    try {
+      const { nickname, studies } = (
+        await get(child(dbRef, `users/${user.uid}`))
+      ).val();
+
+      const result = await axios.post(
+        `https://switea-19c19-default-rtdb.firebaseio.com/studies.json`,
+        {
+          creator: user.uid,
+          nickname,
+          title,
+          type,
+          tags: getTags(),
+          location,
+          createDate: Date.now(),
+          startDate: Date.parse(startDate),
+          endDate: Date.parse(endDate),
+          minCapacity,
+          maxCapacity,
+          contact,
+          content,
+          isActive: true,
+        },
+      );
+
+      const writeUserData = study => {
+        const db = getDatabase();
+        update(ref(db, `users/${user.uid}`), {
+          studies: studies ? [...studies, study] : [study],
+        });
+      };
+
+      writeUserData(result.data.name);
+
+      if (result.status === 200) {
+        alert('등록 성공');
+        console.log('result', result);
+        // window.location.href = './list.html';
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  await onAuthStateChanged(auth, addStudy);
 };
 
+// 이벤트 핸들러
 $addTags.onkeydown = e => {
-  if (e.key !== 'Enter') return;
-  const content = e.target.value.trim();
-
-  if (content) {
-    tags.length < 10
-      ? addTag(content)
-      : alert('태그는 10개까지 등록 가능합니다.');
-  }
-
-  e.target.value = '';
+  if (e.isComposing) return;
+  addTag(e, TAG_CONSTANTS, $tags);
 };
 
-$tags.onclick = e => {
-  if (!e.target.classList.contains('tag-delete')) return;
+$tags.onclick = removeTag;
 
-  const allTag = document.querySelectorAll('.tags li');
-  tags.splice([...allTag].indexOf(e.target.closest('li')), 1);
-  e.target.closest('li').remove();
+$location.onclick = e => {
+  e.target.blur();
+
+  $locationModal.style.display = 'block';
+  document.body.classList.add('non-scroll');
+  $modalSearch.focus();
+};
+
+$modalSearch.onkeydown = async e => {
+  if (e.isComposing || e.key !== 'Enter') return;
+
+  const result = await searchByKeyword(e.target.value);
+  documents = result.documents;
+
+  const $searchListFragment = document.createDocumentFragment();
+
+  $locationModalList.innerHTML = '';
+  if (documents.length > 0) {
+    documents.forEach(($el, index) => {
+      const $searchListItem = document.createElement('li');
+      $searchListItem.dataset.index = index;
+      $searchListItem.className = 'location-modal__search-list--item';
+      $searchListItem.innerHTML = `
+        <p class="place-name">${$el.place_name}</p>
+        <p class="road-address-name">${
+          $el.road_address_name || $el.address_name
+        }</p>
+      `;
+      $searchListFragment.append($searchListItem);
+    });
+  } else {
+    const $searchListItem = document.createElement('li');
+    $searchListItem.className = 'no-result';
+    $searchListItem.textContent = '검색 결과가 없습니다.';
+    $searchListFragment.append($searchListItem);
+  }
+
+  $locationModalList.append($searchListFragment);
+  $locationModalList.classList.add('border');
+};
+
+$locationModal.onclick = e => {
+  if (
+    e.target.classList.contains('location-modal--close') ||
+    e.target.classList.contains('location-modal__bg')
+  ) {
+    $locationModal.style.display = 'none';
+    $locationModalList.innerHTML = '';
+    document.body.classList.remove('non-scroll');
+
+    $modalSearch.value = '';
+    $locationModalList.classList.remove('border');
+  }
+
+  if (e.target.matches('.location-modal__search-list *')) {
+    const itemIndex = e.target.closest('li').dataset.index;
+
+    location.id = documents[itemIndex].id;
+    location.addressName = documents[itemIndex].address_name;
+    location.roadAddressName = documents[itemIndex].road_address_name;
+    location.placeName = documents[itemIndex].place_name;
+    location.x = documents[itemIndex].x;
+    location.y = documents[itemIndex].y;
+
+    $location.value = documents[itemIndex].place_name;
+    $locationModal.style.display = 'none';
+    $locationModalList.innerHTML = '';
+    document.body.classList.remove('non-scroll');
+
+    $modalSearch.value = '';
+    $locationModalList.classList.remove('border');
+  }
 };
 
 $capacity.oninput = e => {
@@ -161,7 +205,7 @@ $capacity.oninput = e => {
 };
 
 $form.onkeydown = e => {
-  if (e.key !== 'Enter' || e.target.name === 'content') return;
+  if (e.isComposing || e.key !== 'Enter' || e.target.name === 'content') return;
   e.preventDefault();
 };
 

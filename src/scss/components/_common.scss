@@ -3,8 +3,10 @@
 @import '~flatpickr/dist/themes/light.css';
 
 body {
-  // @TODO : Change to color variable
-  background-color: #ccc;
+  background-color: rgba($primary, 0.1);
+}
+body.non-scroll {
+  overflow: hidden;
 }
 
 .container {
@@ -92,5 +94,86 @@ body {
     font-size: 11px;
     border-radius: 50%;
     background: rgba($primary, 0.2);
+  }
+}
+
+.filter {
+  position: relative;
+  margin-top: 26px;
+
+  &__toggle-button-container {
+    height: 26px;
+    overflow: hidden;
+  }
+  &__toggle-button {
+    width: 26px;
+    padding-top: 26px;
+    background-image: url(../../src/images/filter_inactive.png);
+    background-size: 26px;
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+  }
+
+  &__toggle-button.active {
+    background-image: url(../../src/images/filter_active.png);
+  }
+
+  &__modal-container {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($black1, 0.5);
+  }
+
+  &__modal {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    max-width: 400px;
+    background-color: $white;
+    border: $border 1px solid;
+    border-radius: 5px;
+    padding: 25px;
+  }
+
+  &__submit {
+    margin-top: 33px;
+  }
+
+  .toggle-button-container {
+    display: inline-flex;
+    width: auto;
+    label {
+      margin-bottom: 0;
+      padding: 0 11px;
+      font-size: 16px;
+    }
+  }
+
+  &__modal-button-container {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 26px;
+    height: 26px;
+    overflow: hidden;
+    z-index: 999;
+  }
+
+  &__modal-close {
+    padding-top: 26px;
+    background-image: url(../../src/images/close.png);
+    background-repeat: no-repeat;
+    background-size: 26px;
+    appearance: none;
+    border: 0;
+    background-color: transparent;
   }
 }

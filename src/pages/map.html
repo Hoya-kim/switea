@@ -22,10 +22,10 @@
             <legend>스터디 검색 폼</legend>
             <div class="search">
               <div class="search__input-container">
-                <label for="search-iput">검색</label>
+                <label for="searchInput">검색</label>
                 <input
                   type="search"
-                  id="search-input"
+                  id="searchInput"
                   name="keyword"
                   aria-required="true"
                   placeholder="위치를 입력하세요."
@@ -34,23 +34,24 @@
               <div class="toggle-button-container">
                 <input
                   type="radio"
-                  id="search-type-study"
+                  id="searchTypeStudy"
                   name="search-type"
                   value="스터디"
                   checked
                 />
-                <label for="search-type-study">스터디</label>
+                <label for="searchTypeStudy">스터디</label>
                 <input
                   type="radio"
-                  id="search-type-place"
+                  id="searchTypePlace"
                   name="search-type"
                   value="장소"
                 />
-                <label for="search-type-place">장소</label>
+                <label for="searchTypePlace">장소</label>
               </div>
             </div>
           </fieldset>
         </form>
+        <ul class="studyInfo-container"></ul>
       </main>
     </div>
   </body>

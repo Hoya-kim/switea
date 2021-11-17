@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=07774a7ff53cd7dcf7fe4d664656946e&libraries=services,clusterer"
+    ></script>
     <title>Switea</title>
   </head>
   <body>
@@ -67,13 +71,14 @@
               </ul>
             </div>
             <div class="input-container">
-              <label for="location">스터디 장소</label>
+              <label for="location">스터디 장소 검색</label>
               <input
-                type="search"
+                type="text"
                 id="location"
                 name="location"
                 aria-required="true"
                 class="location input--border"
+                readonly
               />
             </div>
             <div class="input-container">
@@ -136,6 +141,38 @@
             <button class="recruit__submit button-submit">등록하기</button>
           </fieldset>
         </form>
+
+        <!-- 검색 결과 모달 -->
+        <div class="location-modal__wrap">
+          <div class="location-modal__bg"></div>
+          <div class="location-modal__contents">
+            <!-- <h3 class="location-modal__title">장소 검색 결과</h3> -->
+            <div class="input-container">
+              <label for="modalSearch">스터디 장소 검색</label>
+              <input
+                type="search"
+                id="modalSearch"
+                class="location input--border"
+              />
+            </div>
+            <ul class="location-modal__search-list">
+              <!-- <li class="no-result">검색 결과가 없습니다.</li>
+              <li class="location-modal__search-list--item">
+                <p class="place-name">강남역</p>
+                <p class="road-address-name">
+                  서울특별시 강남구 역삼동 858-4번지
+                </p>
+              </li>
+              <li class="location-modal__search-list--item">
+                <p class="place-name">강남역</p>
+                <p class="road-address-name">
+                  서울특별시 강남구 역삼동 858-4번지
+                </p>
+              </li> -->
+            </ul>
+            <button type="button" class="location-modal--close">닫기</button>
+          </div>
+        </div>
       </main>
     </div>
   </body>
