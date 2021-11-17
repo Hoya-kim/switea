@@ -15,6 +15,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
+const $logout = document.querySelector('.logout');
 
 window.addEventListener(
   'DOMContentLoaded',
@@ -30,9 +31,24 @@ window.addEventListener(
         '.info-container__nickname',
       ).textContent = `${nickname}님`;
       document.querySelector('.info-container__img-photo').src = profileImage;
+      // $logout.disabled = false;
     } else {
       alert('로그인이 필요합니다.');
       window.location.href = '/signin.html';
     }
   }),
 );
+
+// 로그아웃
+$logout.onclick = () => {
+  auth
+    .signOut()
+    .then(() => {
+      window.location.href = '/index.html';
+    })
+    .catch(error => {
+      if (error) {
+        alert('로그인 실패');
+      }
+    });
+};
