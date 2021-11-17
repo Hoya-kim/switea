@@ -15,6 +15,7 @@ module.exports = {
     recruit: './src/js/recruit.js',
     signin: './src/js/signin.js',
     signup: './src/js/signup.js',
+    myarticle: './src/js/myarticle.js',
   },
   // 번들링된 js 파일의 이름(filename)과 저장될 경로(path)를 지정
   // https://webpack.js.org/configuration/output/#outputpath
@@ -105,6 +106,11 @@ module.exports = {
       filename: 'signin.html',
       template: 'src/pages/signin.html',
       chunks: ['app', 'signin'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'myarticle.html',
+      template: 'src/pages/myarticle.html',
+      chunks: ['app', 'myarticle'],
     }),
     // new MiniCssExtractPlugin({ filename: 'css/style.css' }),
     new CopyPlugin({
