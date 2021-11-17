@@ -3,7 +3,8 @@
 
 .view-container {
   .tags {
-    margin-bottom: 17px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid $border;
 
     .tag {
       height: 26px;
@@ -20,7 +21,8 @@
       border-spacing: 0;
 
       tr {
-        border-top: 1px solid $border;
+        height: 60px;
+        border-bottom: 1px solid $border;
       }
 
       th {
@@ -40,5 +42,9 @@
       border: 1px solid $border;
       border-radius: 5px;
     }
+  }
+
+  .button-submit {
+    margin-top: 20px;
   }
 }
