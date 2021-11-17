@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 import * as pinMarker from '../../images/pinMarker.svg';
 
@@ -25,8 +26,13 @@ service.interceptors.request.use(
     return config;
   },
   error => {
-    /** @todo switch to sweetalert2 */
-    console.log(error);
+    Swal.fire({
+      title: '네트워크 에러',
+      text: error,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
   },
 );
 
@@ -51,6 +57,26 @@ const options = {
 let map; // 지도
 
 /**
+ * @description Move to the center by kakao.map.LatLng
+ * @param {kakao.maps.LatLng} kakaoLatLng - coordinates for be centered
+ * @param {boolean} isSmoothly - move smoothly or not
+ */
+const moveCenter = (kakaoLatLng, isSmoothly = true) => {
+  isSmoothly ? map.panTo(kakaoLatLng) : map.setCenter(kakaoLatLng);
+};
+
+/**
+ * @description Move to the center by coords
+ * @param {number} latitude - coordinates latitude for be centered
+ * @param {number} longitude - coordinates longitude for be centered
+ * @param {boolean} isSmoothly - move smoothly or not
+ */
+const moveCenterByCoords = (latitude, longitude, isSmoothly = true) => {
+  const locPosition = new kakao.maps.LatLng(latitude, longitude);
+  isSmoothly ? map.panTo(locPosition) : map.setCenter(locPosition);
+};
+
+/**
  * @description 현재 위치를 표시하는 마커 생성
  */
 const setGeoMarker = () => {
@@ -60,12 +86,11 @@ const setGeoMarker = () => {
     navigator.geolocation.getCurrentPosition(position => {
       const { latitude, longitude } = position.coords; // 위도, 경도
 
-      const locPosition = new kakao.maps.LatLng(latitude, longitude); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-      map.panTo(locPosition);
+      moveCenterByCoords(latitude, longitude); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
 
       const geoMarker = `<div class="marker"><div class="dot"></div><div class="pulse"></div></div>`;
       const currentGeoMarker = new kakao.maps.CustomOverlay({
-        position: locPosition,
+        position: new kakao.maps.LatLng(latitude, longitude),
         content: geoMarker,
         map,
       });
@@ -73,7 +98,13 @@ const setGeoMarker = () => {
     });
   } else {
     // HTML5의 GeoLocation을 사용할 수 없을 때
-    alert('스터디 검색을 위해 위치 정보가 필요해요 😭');
+    Swal.fire({
+      title: '위치 정보 에러',
+      text: '스터디 검색을 위해 위치 정보가 필요해요 😭',
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
   }
 };
 
@@ -103,9 +134,43 @@ const searchByKeyword = async (
     const url = `${BASE_URL}/keyword.json?query=${query}&page=${page}&size=${size}&sort=${sort}`;
     const { data } = await service.get(url);
     return data;
-  } catch (e) {
-    /** @todo switch to sweetalert2 */
-    console.error(e);
+  } catch (error) {
+    Swal.fire({
+      title: '네트워크 에러',
+      text: error,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
+  }
+};
+
+/**
+ * Search by address on kakao map API
+ * @param {string} query search address
+ * @param {number} [page=1] page number
+ * @param {number} [size=15] page size
+ * @param {string} [analyzeType='similar'] determine analyze_type, 'similar' or 'exact'
+ * @returns {Promise<object>} search result
+ */
+const searchByAddress = async (
+  query,
+  page = 1,
+  size = 15,
+  analyzeType = 'similar',
+) => {
+  try {
+    const url = `${BASE_URL}/address.json?query=${query}&page=${page}&size=${size}&analyze_type=${analyzeType}`;
+    const { data } = await service.get(url);
+    return data;
+  } catch (error) {
+    Swal.fire({
+      title: '네트워크 에러',
+      text: error,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
   }
 };
 
@@ -140,7 +205,7 @@ const setMarkers = (studies, clickEventHandler) => {
 
   if (clickEventHandler) {
     kakao.maps.event.addListener(clusterer, 'clusterclick', cluster => {
-      map.panTo(cluster.getCenter()); // 클러스터 중심으로 지도 이동
+      moveCenter(cluster.getCenter()); // 클러스터 중심으로 지도 이동
 
       const clusteredData = cluster
         .getMarkers()
@@ -161,7 +226,7 @@ const setMarkers = (studies, clickEventHandler) => {
     if (!clickEventHandler) return marker;
 
     kakao.maps.event.addListener(marker, 'click', () => {
-      map.panTo(position); // 마커 중심으로 지도 이동
+      moveCenter(position); // 마커 중심으로 지도 이동
       clickEventHandler([{ id, study }]);
     });
 
@@ -180,4 +245,11 @@ const setMarkers = (studies, clickEventHandler) => {
  * @todo 실시간 위치를 파악하는 함수
  */
 
-export { initMapView, setGeoMarker, searchByKeyword, setMarkers };
+export {
+  initMapView,
+  setGeoMarker,
+  moveCenterByCoords,
+  searchByKeyword,
+  searchByAddress,
+  setMarkers,
+};
