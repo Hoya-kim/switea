@@ -110,6 +110,30 @@ const searchByKeyword = async (
 };
 
 /**
+ * Search by address on kakao map API
+ * @param {string} query search address
+ * @param {number} [page=1] page number
+ * @param {number} [size=15] page size
+ * @param {string} [analyzeType='similar'] determine analyze_type, 'similar' or 'exact'
+ * @returns {Promise<object>} search result
+ */
+const searchByAddress = async (
+  query,
+  page = 1,
+  size = 15,
+  analyzeType = 'similar',
+) => {
+  try {
+    const url = `${BASE_URL}/address.json?query=${query}&page=${page}&size=${size}&analyze_type=${analyzeType}`;
+    const { data } = await service.get(url);
+    return data;
+  } catch (e) {
+    /** @todo switch to sweetalert2 */
+    console.error(e);
+  }
+};
+
+/**
  * @description 지도에 마커를 표시하는 함수
  * @param {Array} studies - Array of study object
  * @param {function} clickEventHandler - marker click event에 바인딩될 함수
@@ -180,4 +204,10 @@ const setMarkers = (studies, clickEventHandler) => {
  * @todo 실시간 위치를 파악하는 함수
  */
 
-export { initMapView, setGeoMarker, searchByKeyword, setMarkers };
+export {
+  initMapView,
+  setGeoMarker,
+  searchByKeyword,
+  searchByAddress,
+  setMarkers,
+};
