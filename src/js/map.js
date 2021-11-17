@@ -8,13 +8,11 @@ const $mainArea = document.getElementById('map');
 const $mapContainer = document.createElement('div');
 const $searchInput = document.getElementById('searchInput');
 
-$mapContainer.classList.add('kakaoMap');
-$mainArea.appendChild($mapContainer);
-kakaoMap.initMapView($mapContainer);
-
-// 현재위치 설정
-kakaoMap.setGeoMarker();
-
+// functions
+/**
+ * @description Render study info list about clicked marker, cluster
+ * @param {Array<object>} studyList
+ */
 const renderMarkered = studyList => {
   const $infoContainer = document.querySelector('.studyInfo-container');
   $infoContainer.scrollTo(0, 0);
@@ -56,6 +54,13 @@ const renderMarkered = studyList => {
 
 // Event Listeners
 window.addEventListener('DOMContentLoaded', async () => {
+  $mapContainer.classList.add('kakaoMap');
+  $mainArea.appendChild($mapContainer);
+  kakaoMap.initMapView($mapContainer);
+
+  // 현재위치 설정
+  kakaoMap.setGeoMarker();
+
   /** @todo get list of item, isActive === "true" */
   const { data } = await axios.get(
     `https://switea-19c19-default-rtdb.firebaseio.com/studies.json`,
