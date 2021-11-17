@@ -1,0 +1,13 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+.myarticle-container {
+  display: flex;
+  flex-direction: column;
+
+  &.none {
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 136px);
+  }
+}
