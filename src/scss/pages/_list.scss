@@ -10,4 +10,24 @@
     width: 25%;
     min-width: 130px;
   }
+
+  .filter {
+    .tags {
+      align-items: flex-end;
+
+      & + .input-container {
+        margin-top: 33px;
+      }
+
+      .tag {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 30px;
+        border-radius: 15px;
+        font-size: 14px;
+        padding-right: 5px;
+      }
+    }
+  }
 }
