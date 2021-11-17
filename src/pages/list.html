@@ -103,16 +103,19 @@
                   <input
                     type="text"
                     id="date"
+                    name="date"
                     class="datepicker input--border"
                     aria-required="true"
                     readonly
                   />
                 </div>
-                <button class="filter__submit button-submit">
+                <button type="submit" class="filter__submit button-submit">
                   필터 적용하기
                 </button>
                 <div class="filter__modal-button-container">
-                  <button class="filter__modal-close">close</button>
+                  <button type="button" class="filter__modal-close">
+                    close
+                  </button>
                 </div>
               </form>
             </div>
