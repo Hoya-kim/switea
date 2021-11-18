@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import spinner from './components/spinner';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -17,8 +18,8 @@ firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
 const $articleCount = document.querySelector('.article-count');
 
-const getMyArticle = async uid => {
-  const studies = await firebase
+const getMyArticle = uid =>
+  firebase
     .database()
     .ref()
     .child('studies')
@@ -26,8 +27,6 @@ const getMyArticle = async uid => {
     .equalTo(uid)
     .once('value')
     .then(snapshot => snapshot.val());
-  return studies;
-};
 
 // 내가 쓴 모집글 render
 const renderStudyList = studylist => {
@@ -69,23 +68,16 @@ const renderStudyList = studylist => {
 window.addEventListener(
   'DOMContentLoaded',
   onAuthStateChanged(auth, async user => {
-    if (user) {
-      const { uid } = user;
-      const studies = await getMyArticle(uid);
-      document
-        .querySelector('.myarticle-container')
-        .classList.toggle('none', !studies);
+    const { uid } = user;
+    const studies = await getMyArticle(uid);
+    document
+      .querySelector('.myarticle-container')
+      .classList.toggle('none', !studies);
 
-      // 작성한 모집글이 없는 경우
-      if (!studies) {
-        $articleCount.textContent = `작성한 모집글이 없습니다.
-          첫 번째 모집글을 작성해보세요🙂`;
-      } else {
-        renderStudyList(Object.values(studies));
-      }
-    } else {
-      alert('로그인이 필요합니다.');
-      window.location.href = '/signin.html';
-    }
+    // 작성한 모집글이 없는 경우
+    !studies
+      ? ($articleCount.innerHTML = `작성한 모집글이 없습니다. <br>첫 번째 모집글을 작성해보세요🙂`)
+      : renderStudyList(Object.values(studies));
+    setTimeout(spinner.removeOnView, 500);
   }),
 );
