@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as kakaoMap from './utils/kakaoMap';
+import spinner from './components/spinner';
 
 // DOMElements
 const $mainArea = document.getElementById('map');
@@ -60,6 +61,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     `https://switea-19c19-default-rtdb.firebaseio.com/studies.json`,
   );
   kakaoMap.setMarkers(data, renderMarkered);
+
+  setTimeout(spinner.removeOnView, 1000);
 });
 
 $searchInput.onkeydown = async e => {
