@@ -3,6 +3,7 @@ const inputStatus = {
     RegExp:
       /^[0-9a-zA-Z]([-.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/,
     errorMessage: '올바른 아이디 형식을 입력해주세요.',
+    duplication: false,
     status: false,
   },
   password: {
@@ -29,12 +30,19 @@ const inputStatus = {
     errorMessage: '핸드폰 번호 형식으로 입력해주세요.',
     status: false,
   },
+  profileImage: {
+    status: false,
+  },
 };
 
-const isAbleToSubmit = allInputOfForm =>
+const isAbleToSignup = allInputOfForm =>
+  [...allInputOfForm].every(inputType => inputStatus[inputType.name].status) &&
+  inputStatus.email.duplication;
+
+const isAbleToSignin = allInputOfForm =>
   [...allInputOfForm].every(inputType => inputStatus[inputType.name].status);
 
 const isSamePassword = confirmPassword =>
   confirmPassword === document.getElementById('signupPassword').value;
 
-export { inputStatus, isAbleToSubmit, isSamePassword };
+export { inputStatus, isAbleToSignup, isAbleToSignin, isSamePassword };
