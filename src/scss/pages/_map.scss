@@ -39,6 +39,32 @@
     @include boxShadowFloated;
   }
 
+  .location-button {
+    width: 34px;
+    padding-top: 34px;
+    background-image: url(../images/geo_location_icon.png);
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    background-position-y: 4px;
+    background-size: 26px;
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+
+    &-container {
+      position: absolute;
+      top: 100px;
+      right: 18px;
+      height: 34px;
+      overflow: hidden;
+      background: $white;
+      z-index: 10;
+      border: 1px solid $border;
+      border-radius: 5px;
+      @include boxShadowFloated;
+    }
+  }
+
   .studyInfo-container {
     list-style: none;
     position: absolute;

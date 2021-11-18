@@ -7,6 +7,7 @@ import spinner from './components/spinner';
 const $mainArea = document.getElementById('map');
 const $mapContainer = document.createElement('div');
 const $searchInput = document.getElementById('searchInput');
+const $locationButton = document.querySelector('.location-button');
 
 // functions
 /**
@@ -97,4 +98,8 @@ $searchInput.onkeydown = async e => {
       confirmButtonText: '확인',
     });
   }
+};
+
+$locationButton.onclick = () => {
+  kakaoMap.moveGeoMarker();
 };
