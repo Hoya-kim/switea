@@ -73,7 +73,6 @@ document.querySelector('.back').onclick = () => {
   window.history.back();
 };
 
-window.addEventListener(
-  'DOMContentLoaded',
-  setTimeout(spinner.removeOnView, 500),
-);
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(spinner.removeOnView, 500);
+});
