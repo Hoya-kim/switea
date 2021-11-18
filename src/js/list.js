@@ -35,36 +35,45 @@ const studyList = ref(database, 'studies/');
 
 let totalStudyListData = {};
 
+// TODO: 스터디 카드 렌더링 함수 모듈화하기
 const renderStudyList = studyListData => {
   const $studyList = document.querySelector('.study-list');
   let studyListHTML = '';
   let profileImageUrls = [];
 
-  studyListData.forEach(studyData => {
-    const startDate = new Date(studyData.startDate);
-    const endDate = new Date(studyData.endDate);
-    profileImageUrls = [...profileImageUrls, studyData.profileImage];
+  studyListData.forEach(([studyId, study]) => {
+    const {
+      startDate,
+      endDate,
+      profileImage,
+      location,
+      tags,
+      title,
+      nickname,
+    } = study;
 
-    const locationTagHTML = studyData.location
-      ? `<li class="tag location">#${studyData.location.placeName}</li>`
+    profileImageUrls = [...profileImageUrls, profileImage];
+
+    const locationTagHTML = location
+      ? `<li class="tag location">#${location.placeName}</li>`
       : '';
 
-    const tagsHTML = studyData.tags
-      ? studyData.tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
+    const tagsHTML = tags
+      ? tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
       : '';
 
     studyListHTML += `
     <li class="study-list__card">
-      <a href="#">
+      <a href="/view.html?id=${studyId}">
         <div class="study-list__profile-image"></div>
         <div class="study-list__contents-container">
-          <p class="study-list__subject">${studyData.title}</p>
-          <span class="study-list__name">${studyData.nickname}</span>
+          <p class="study-list__subject">${title}</p>
+          <span class="study-list__name">${nickname}</span>
           <span class="study-list__date">${
-            startDate.getMonth() + 1
-          }월 ${startDate.getDate()}일 - ${
-      endDate.getMonth() + 1
-    }월 ${endDate.getDate()}일</span>
+            new Date(startDate).getMonth() + 1
+          }월 ${new Date(startDate).getDate()}일 - ${
+      new Date(endDate).getMonth() + 1
+    }월 ${new Date(endDate).getDate()}일</span>
           <ul class="study-list__tags tags">
             ${locationTagHTML}${tagsHTML}
           </ul>
@@ -72,7 +81,9 @@ const renderStudyList = studyListData => {
       </a>
     </li>`;
   });
+
   $studyList.innerHTML = studyListHTML;
+
   profileImageUrls.forEach((url, idx) => {
     $studyList.children[idx].querySelector(
       '.study-list__profile-image',
@@ -90,8 +101,8 @@ const toggleFilterActivation = () => {
 
 const filterStudies = conditions => {
   const { filterType, filterStartDate, filterEndDate, filterTags } = conditions;
-  return totalStudyListData.filter(studyData => {
-    const { type, startDate, endDate, tags } = studyData;
+  return totalStudyListData.filter(([_, study]) => {
+    const { type, startDate, endDate, tags } = study;
     const isTypeSatisfiedCondition = filterType ? type === filterType : true;
     const isDateSatisfiedCondition =
       filterStartDate || filterEndDate
@@ -112,6 +123,7 @@ const filterStudies = conditions => {
   });
 };
 
+// 모달 여닫기
 [$filterToggleButton, $modalContainer, $modalCloseButton].forEach($el => {
   $el.onclick = e => {
     if (e.target !== $el) return;
@@ -121,7 +133,7 @@ const filterStudies = conditions => {
 
 // 데이터 업데이트될 때 이벤트 발생
 onValue(studyList, snapshot => {
-  totalStudyListData = Object.values(snapshot.val());
+  totalStudyListData = Object.entries(snapshot.val());
   renderStudyList(totalStudyListData);
 });
 
