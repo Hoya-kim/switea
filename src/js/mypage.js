@@ -78,3 +78,7 @@ $logout.onclick = () => {
       });
     });
 };
+
+document.querySelector('.back').onclick = () => {
+  window.history.back();
+};
