@@ -4,9 +4,10 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/storage';
 import 'firebase/compat/database';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import spinner from './components/spinner';
 import {
   inputStatus,
-  isAbleToSubmit,
+  isAbleToSignup,
   isSamePassword,
 } from './utils/formValidation';
 
@@ -43,7 +44,7 @@ const getFormInfo = () => {
   return formInfo;
 };
 
-// input의 유효성 검사
+// input 유효성 검사
 const checkValidation = $target => {
   const [$iconSuccess, $iconError] =
     $target.parentNode.querySelectorAll('.icon');
@@ -103,6 +104,8 @@ $signupProfileImage.onchange = e => {
 
   reader.onload = () => {
     document.querySelector('.profile-image__view').src = reader.result;
+    inputStatus.profileImage.status = true;
+    $signUpSubmit.disabled = !isAbleToSignup(allInputOfForm);
   };
 
   reader.readAsDataURL(e.target.files[0]);
@@ -115,7 +118,6 @@ $form.onkeydown = e => {
   e.preventDefault();
 };
 
-// input 입력 event
 $form.oninput = e => {
   e.preventDefault();
   if (e.target.name === 'profileImage') return;
@@ -131,12 +133,12 @@ $form.oninput = e => {
     });
   }
 
-  $signUpSubmit.disabled = !isAbleToSubmit(allInputOfForm);
+  $signUpSubmit.disabled = !isAbleToSignup(allInputOfForm);
 };
 
 $signupEmail.oninput = e => {
   e.target.parentNode.querySelector('.error').classList.remove('pass');
-  checkValidation(e.target); // 팀원들이랑 상의하기
+  checkValidation(e.target);
   $checkEmailDuplication.disabled = !inputStatus.email.status;
 };
 
@@ -149,8 +151,11 @@ $checkEmailDuplication.onclick = async e => {
     ? '중복된 이메일입니다. 다른 이메일을 사용해 주세요.'
     : '사용 가능한 이메일입니다. 가입을 진행해 주세요.';
 
-  if (!result)
+  if (!result) {
     e.target.parentNode.querySelector('.error').classList.add('pass');
+    inputStatus.email.duplication = true;
+    $signUpSubmit.disabled = !isAbleToSignup(allInputOfForm);
+  }
 };
 
 // 회원가입 버튼 클릭 시
@@ -176,6 +181,9 @@ $signUpSubmit.onclick = async e => {
       },
     );
 
+    document.querySelector('form').reset(); // 폼 초기화
+    auth.signOut(); // 회원가입 후 무조건 유저가 1회는 로그인을 직접 해야할 경우
+
     Swal.fire({
       title: '회원가입 성공',
       text: '성공적으로 회원가입 되었습니다. 로그인 페이지로 이동합니다.',
@@ -186,6 +194,7 @@ $signUpSubmit.onclick = async e => {
       window.location = '/signin.html';
     });
   } catch (error) {
+    console.log(error);
     const errorCode = error.code;
     switch (errorCode) {
       case 'auth/email-already-in-use':
@@ -209,3 +218,9 @@ $signUpSubmit.onclick = async e => {
     }
   }
 };
+
+document.querySelector('.back').onclick = () => {
+  window.history.back();
+};
+
+setTimeout(spinner.removeOnView, 500);

@@ -1,6 +1,8 @@
+import Swal from 'sweetalert2';
 import firebase from 'firebase/compat/app';
-import { getDatabase, ref, child, get } from 'firebase/database';
+import { getDatabase, ref, get, child } from 'firebase/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import spinner from './components/spinner';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -17,6 +19,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
 const $logout = document.querySelector('.logout');
 
+// TODO : Spinner 추가
 window.addEventListener(
   'DOMContentLoaded',
   onAuthStateChanged(auth, async user => {
@@ -28,13 +31,24 @@ window.addEventListener(
       ).val();
 
       document.querySelector(
+        '.info-container__img-photo',
+      ).style.backgroundImage = `url(${profileImage})`;
+
+      document.querySelector(
         '.info-container__nickname',
       ).textContent = `${nickname}님`;
-      document.querySelector('.info-container__img-photo').src = profileImage;
-      // $logout.disabled = false;
+
+      setTimeout(spinner.removeOnView, 500);
     } else {
-      alert('로그인이 필요합니다.');
-      window.location.href = '/signin.html';
+      Swal.fire({
+        title: '로그인',
+        html: `로그인이 필요합니다. <br>로그인 페이지로 이동합니다.`,
+        icon: 'error',
+        showCancelButton: false,
+        confirmButtonText: '확인',
+      }).then(() => {
+        window.location = '/signin.html';
+      });
     }
   }),
 );
@@ -43,12 +57,24 @@ window.addEventListener(
 $logout.onclick = () => {
   auth
     .signOut()
-    .then(() => {
-      window.location.href = '/index.html';
-    })
-    .catch(error => {
-      if (error) {
-        alert('로그인 실패');
-      }
+    .then(
+      Swal.fire({
+        title: '로그아웃',
+        text: '로그아웃 되었습니다.',
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonText: '확인',
+      }).then(() => {
+        window.location = '/index.html';
+      }),
+    )
+    .catch(() => {
+      Swal.fire({
+        title: '로그아웃 실패',
+        html: `로그아웃에 실패했습니다. 잠시 후 다시 시도해주세요.`,
+        icon: 'error',
+        showCancelButton: false,
+        confirmButtonText: '확인',
+      });
     });
 };
