@@ -38,7 +38,7 @@ window.addEventListener(
         '.info-container__nickname',
       ).textContent = `${nickname}님`;
 
-      setTimeout(spinner.removeOnView, 500);
+      setTimeout(spinner.removeOnView, 1000);
     } else {
       Swal.fire({
         title: '로그인',
