@@ -6,6 +6,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { searchByKeyword } from './utils/kakaoMap';
 import bindFlatpicker from './components/datepicker';
 import { getTags, addTag, removeTag } from './utils/tag';
+import spinner from './components/spinner';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -87,6 +88,7 @@ const recruitRequest = async e => {
         `https://switea-19c19-default-rtdb.firebaseio.com/studies.json`,
         {
           creator: user.uid,
+          profileImage: user.profileImage,
           nickname,
           title,
           type,
@@ -240,3 +242,11 @@ $form.onsubmit = e => {
 
   recruitRequest(e);
 };
+
+document.querySelector('.back').onclick = () => {
+  window.history.back();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(spinner.removeOnView, 1000);
+});
