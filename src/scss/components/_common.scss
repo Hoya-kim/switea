@@ -14,7 +14,6 @@ body.non-scroll {
 }
 
 .container {
-  position: relative;
   max-width: 768px;
   height: 100%;
   min-height: 100vh;
@@ -184,8 +183,8 @@ body.non-scroll {
 }
 
 .spinner {
-  position: absolute;
-  width: 100%;
+  position: fixed;
+  margin: 0 auto;
   height: calc(100vh - 74px);
   max-width: 768px;
   top: 0;
@@ -196,6 +195,7 @@ body.non-scroll {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0px 0px 6px rgb(0 0 0 / 15%);
 
   object {
     width: 50%;
