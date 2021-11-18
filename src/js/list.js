@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import bindFlatpicker from './components/datepicker';
 import { getTags, addTag, removeTag } from './utils/tag';
+import spinner from './components/spinner';
 
 const $filterToggleButton = document.querySelector('.filter__toggle-button');
 const $modalContainer = document.querySelector('.filter__modal-container');
@@ -135,6 +136,8 @@ const filterStudies = conditions => {
 onValue(studyList, snapshot => {
   totalStudyListData = Object.entries(snapshot.val());
   renderStudyList(totalStudyListData);
+  // spinner.removeOnView;
+  setTimeout(spinner.removeOnView, 500);
 });
 
 // 필터 조건 입력받기
