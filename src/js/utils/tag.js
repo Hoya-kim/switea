@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 let tags = [];
 
 const getTags = () => tags;
@@ -22,7 +24,12 @@ const addTag = (e, TAG_CONSTANTS, $tags) => {
   if (content) {
     getTags().length < TAG_CONSTANTS.MAX_LENGTH
       ? setTag(content, $tags)
-      : alert(TAG_CONSTANTS.ALERT_MESSAGE);
+      : Swal.fire({
+          text: TAG_CONSTANTS.ALERT_MESSAGE,
+          icon: 'warning',
+          showCancelButton: false,
+          confirmButtonText: '확인',
+        });
   }
   e.target.value = '';
 };

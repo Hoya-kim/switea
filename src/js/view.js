@@ -1,6 +1,7 @@
 import Swal from 'sweetalert2';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, child, get } from 'firebase/database';
+import spinner from './components/spinner';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -62,7 +63,7 @@ const render = () => {
   tags.forEach($el => setTag($el, 'tag'));
   $tags.appendChild($tagsFragment);
 
-  document.querySelector('.title').textContent = title;
+  document.querySelector('.view__title').textContent = title;
   document.querySelector('.view__type').textContent =
     type === 'regular' ? '정기스터디' : '일시스터디';
 
@@ -108,4 +109,11 @@ const getRecruit = async () => {
   }
 };
 
-window.addEventListener('DOMContentLoaded', getRecruit);
+document.querySelector('.back').onclick = () => {
+  window.history.back();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+  getRecruit();
+  setTimeout(spinner.removeOnView, 1000);
+});
