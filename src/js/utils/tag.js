@@ -18,7 +18,7 @@ const setTag = (content, $tags) => {
 };
 
 const addTag = (e, TAG_CONSTANTS, $tags) => {
-  if (e.key !== 'Enter') return;
+  if (e.isComposing || e.key !== 'Enter') return;
   const content = e.target.value.trim();
 
   if (content) {
