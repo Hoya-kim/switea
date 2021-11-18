@@ -49,6 +49,12 @@ const location = {
   x: '',
   y: '',
 };
+const userState = {
+  uid: '',
+  studies: '',
+  nickname: '',
+  profileImage: '',
+};
 
 // function
 const recruitRequest = async e => {
@@ -65,72 +71,51 @@ const recruitRequest = async e => {
   const startDate = date.split('~')[0];
   const endDate = date.split('~').length > 1 ? date.split('~')[1] : startDate;
 
-  const addStudy = async user => {
-    if (!user) {
+  try {
+    const result = await axios.post(
+      `https://switea-19c19-default-rtdb.firebaseio.com/studies.json`,
+      {
+        creator: userState.uid,
+        profileImage: userState.profileImage,
+        nickname: userState.nickname,
+        title,
+        type,
+        tags: getTags(),
+        location,
+        createDate: Date.now(),
+        startDate: Date.parse(startDate),
+        endDate: Date.parse(endDate),
+        minCapacity,
+        maxCapacity,
+        contact,
+        content,
+        isActive: true,
+      },
+    );
+
+    const writeUserData = study => {
+      const db = getDatabase();
+      update(ref(db, `users/${userState.uid}`), {
+        studies: userState.studies ? [...userState.studies, study] : [study],
+      });
+    };
+
+    writeUserData(result.data.name);
+
+    if (result.status === 200) {
       Swal.fire({
-        text: '로그인이 필요한 페이지입니다.',
-        icon: 'error',
+        title: '등록 성공',
+        text: '모집글이 정상적으로 등록되었습니다.',
+        icon: 'success',
         showCancelButton: false,
         confirmButtonText: '확인',
       }).then(() => {
-        window.location = './signin.html';
+        window.location = './list.html';
       });
     }
-
-    const dbRef = ref(getDatabase());
-
-    try {
-      const { nickname, studies } = (
-        await get(child(dbRef, `users/${user.uid}`))
-      ).val();
-
-      const result = await axios.post(
-        `https://switea-19c19-default-rtdb.firebaseio.com/studies.json`,
-        {
-          creator: user.uid,
-          profileImage: user.profileImage,
-          nickname,
-          title,
-          type,
-          tags: getTags(),
-          location,
-          createDate: Date.now(),
-          startDate: Date.parse(startDate),
-          endDate: Date.parse(endDate),
-          minCapacity,
-          maxCapacity,
-          contact,
-          content,
-          isActive: true,
-        },
-      );
-
-      const writeUserData = study => {
-        const db = getDatabase();
-        update(ref(db, `users/${user.uid}`), {
-          studies: studies ? [...studies, study] : [study],
-        });
-      };
-
-      writeUserData(result.data.name);
-
-      if (result.status === 200) {
-        Swal.fire({
-          title: '등록 성공',
-          text: '모집글이 정상적으로 등록되었습니다.',
-          icon: 'success',
-          showCancelButton: false,
-          confirmButtonText: '확인',
-        }).then(() => {
-          window.location = './list.html';
-        });
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  await onAuthStateChanged(auth, addStudy);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 // 이벤트 핸들러
@@ -248,5 +233,26 @@ document.querySelector('.back').onclick = () => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-  setTimeout(spinner.removeOnView, 1000);
+  setTimeout(() => {
+    spinner.removeOnView();
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        const dbRef = ref(getDatabase());
+        const userInfo = (await get(child(dbRef, `users/${user.uid}`))).val();
+        userState.uid = user.uid;
+        userState.studies = userInfo.studies;
+        userState.nickname = userInfo.nickname;
+        userState.profileImage = userInfo.profileImage;
+      } else {
+        Swal.fire({
+          text: '로그인이 필요한 페이지입니다.',
+          icon: 'error',
+          showCancelButton: false,
+          confirmButtonText: '확인',
+        }).then(() => {
+          window.location = './signin.html';
+        });
+      }
+    });
+  }, 1000);
 });
