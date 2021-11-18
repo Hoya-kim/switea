@@ -56,6 +56,9 @@ const options = {
 /** 지도 뷰를 위한 객체 */
 let map; // 지도
 
+/** 현재 위치를 표시하는 custom overlay */
+let currentGeoMarker;
+
 /**
  * @description Move to the center by kakao.map.LatLng
  * @param {kakao.maps.LatLng} kakaoLatLng - coordinates for be centered
@@ -89,12 +92,32 @@ const setGeoMarker = () => {
       moveCenterByCoords(latitude, longitude); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
 
       const geoMarker = `<div class="marker"><div class="dot"></div><div class="pulse"></div></div>`;
-      const currentGeoMarker = new kakao.maps.CustomOverlay({
+      currentGeoMarker = new kakao.maps.CustomOverlay({
         position: new kakao.maps.LatLng(latitude, longitude),
         content: geoMarker,
         map,
       });
       currentGeoMarker.setMap(map);
+    });
+  } else {
+    // HTML5의 GeoLocation을 사용할 수 없을 때
+    Swal.fire({
+      title: '위치 정보 에러',
+      text: '스터디 검색을 위해 위치 정보가 필요해요 😭',
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: '확인',
+    });
+  }
+};
+
+/** @description move marker to renewal geo location */
+const moveGeoMarker = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords; // 위도, 경도
+      moveCenterByCoords(latitude, longitude); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+      currentGeoMarker.setPosition(new kakao.maps.LatLng(latitude, longitude));
     });
   } else {
     // HTML5의 GeoLocation을 사용할 수 없을 때
@@ -248,6 +271,7 @@ const setMarkers = (studies, clickEventHandler) => {
 export {
   initMapView,
   setGeoMarker,
+  moveGeoMarker,
   moveCenterByCoords,
   searchByKeyword,
   searchByAddress,
