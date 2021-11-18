@@ -14,21 +14,32 @@ const $locationButton = document.querySelector('.location-button');
  * @description Render study info list about clicked marker, cluster
  * @param {Array<object>} studyList
  */
-const renderMarkered = studyList => {
+const renderMarkered = studyListData => {
   const $infoContainer = document.querySelector('.studyInfo-container');
   $infoContainer.scrollTo(0, 0);
 
   let studyListHTML = '';
-  studyList.forEach(({ id, study }) => {
-    const startDate = new Date(study.startDate);
-    const endDate = new Date(study.endDate);
+  let profileImageUrls = [];
 
-    const locationTagHTML = study.location
-      ? `<li class="tag location">#${study.location.placeName}</li>`
+  studyListData.forEach(({ id, study }) => {
+    const {
+      startDate,
+      endDate,
+      profileImage,
+      location,
+      tags,
+      title,
+      nickname,
+    } = study;
+
+    profileImageUrls = [...profileImageUrls, profileImage];
+
+    const locationTagHTML = location
+      ? `<li class="tag location">#${location.placeName}</li>`
       : '';
 
-    const tagsHTML = study.tags
-      ? study.tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
+    const tagsHTML = tags
+      ? tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
       : '';
 
     studyListHTML += `
@@ -36,9 +47,13 @@ const renderMarkered = studyList => {
       <a href="/view.html?id=${id}">
         <div class="study-list__profile-image"></div>
         <div class="study-list__contents-container">
-          <p class="study-list__subject">${study.title}</p>
-          <span class="study-list__name">${study.nickname}</span>
-          <span class="study-list__date">${startDate.getMonth()}월 ${startDate.getDate()}일 - ${endDate.getMonth()}월 ${endDate.getDate()}일</span>
+          <p class="study-list__subject">${title}</p>
+          <span class="study-list__name">${nickname}</span>
+          <span class="study-list__date">${
+            new Date(startDate).getMonth() + 1
+          }월 ${new Date(startDate).getDate()}일 - ${
+      new Date(endDate).getMonth() + 1
+    }월 ${new Date(endDate).getDate()}일</span>
           <ul class="study-list__tags tags">
             ${locationTagHTML}${tagsHTML}
           </ul>
@@ -46,9 +61,16 @@ const renderMarkered = studyList => {
       </a>
     </li>`;
   });
+
   $infoContainer.innerHTML = studyListHTML;
 
-  studyList.length > 1
+  profileImageUrls.forEach((url, idx) => {
+    $infoContainer.children[idx].querySelector(
+      '.study-list__profile-image',
+    ).style.backgroundImage = `url(${url})`;
+  });
+
+  studyListData.length > 1
     ? $infoContainer.classList.add('multiple')
     : $infoContainer.classList.remove('multiple');
 };
