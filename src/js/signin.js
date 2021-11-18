@@ -1,7 +1,8 @@
 import Swal from 'sweetalert2';
 import firebase from 'firebase/compat/app';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { inputStatus, isAbleToSubmit } from './utils/formValidation';
+import { inputStatus, isAbleToSignin } from './utils/formValidation';
+import spinner from './components/spinner';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBO-Gg2r1Q58sjCfIDBvT_vjZkjwItkVik',
@@ -38,7 +39,7 @@ const checkValidation = $target => {
 document.querySelector('form').oninput = e => {
   checkValidation(e.target);
 
-  $signinSubmit.disabled = !isAbleToSubmit(allInputOfForm);
+  $signinSubmit.disabled = !isAbleToSignin(allInputOfForm);
 };
 
 // 로그인 버튼 클릭 시
@@ -67,3 +68,5 @@ $signinSubmit.onclick = async e => {
     });
   }
 };
+
+setTimeout(spinner.removeOnView, 500);
