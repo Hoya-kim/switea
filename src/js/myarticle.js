@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getDatabase, ref, get, child } from 'firebase/database';
 import spinner from './components/spinner';
 
 const firebaseConfig = {
@@ -17,6 +18,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = getAuth();
 const $articleCount = document.querySelector('.article-count');
+let profileImage = '';
 
 const getMyArticle = uid =>
   firebase
@@ -50,7 +52,7 @@ const renderStudyList = studylist => {
     studyListHTML += `
       <li class="study-list__card">
         <a href="#">
-          <div class="study-list__profile-image"></div>
+          <p class="study-list__profile-image" style="background-image: url(${profileImage})"></p>
           <div class="study-list__contents-container">
             <p class="study-list__subject">${studyData.title}</p>
             <span class="study-list__name">${studyData.nickName}</span>
@@ -69,6 +71,8 @@ window.addEventListener(
   'DOMContentLoaded',
   onAuthStateChanged(auth, async user => {
     const { uid } = user;
+    const dbRef = ref(getDatabase());
+    profileImage = (await get(child(dbRef, `users/${uid}`))).val().profileImage;
     const studies = await getMyArticle(uid);
     document
       .querySelector('.myarticle-container')

@@ -8,12 +8,21 @@
   &.none {
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 136px);
+    height: calc(100vh - 183px);
 
     .article-count {
       text-align: center;
       font-size: 18px;
       line-height: 1.5;
+    }
+  }
+  .study-list {
+    &__subject {
+      margin-bottom: 8px;
+    }
+
+    &__tags {
+      margin-top: 10px;
     }
   }
 }
