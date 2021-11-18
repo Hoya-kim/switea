@@ -67,6 +67,10 @@ const renderStudyList = studylist => {
   $studyList.innerHTML = studyListHTML;
 };
 
+document.querySelector('.back').onclick = () => {
+  window.history.back();
+};
+
 window.addEventListener(
   'DOMContentLoaded',
   onAuthStateChanged(auth, async user => {
