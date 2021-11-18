@@ -2,7 +2,8 @@
 @use '../utils/' as *;
 
 .container.home {
-  background-color: $primary;
+  background-color: $secondary;
+  padding-top: 18px;
 }
 
 .logo {
@@ -14,18 +15,52 @@
   a {
     font-size: 45px;
     font-weight: bold;
+    color: $white;
   }
 }
 
 .home {
-  .slogan {
+  &__slogan {
     width: 250px;
     font-size: 35px;
     font-weight: bold;
-    line-height: 60px;
+    line-height: 50px;
     word-break: keep-all;
+    color: $dark-gray2;
+    margin: 60px 0;
   }
+
+  &__study-now {
+    font-size: 20px;
+    color: $white;
+  }
+
+  &__study-now::before {
+    content: '';
+    display: inline-block;
+    width: 25px;
+    height: 22px;
+    background: url(../images/here.png) no-repeat bottom center / contain;
+    background-size: 13px;
+  }
+
+  .study-list__card {
+    margin: 10px 0;
+  }
+
   .tags {
-    margin-top: 10px;
+    margin-top: 15px;
+  }
+
+  &__study-more {
+    font-size: 16px;
+    color: $white;
+    text-align: center;
+  }
+
+  &__study-more {
+    font-size: 16px;
+    color: $white;
+    text-align: center;
   }
 }

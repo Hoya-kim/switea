@@ -114,6 +114,8 @@ body.non-scroll {
     width: 26px;
     padding-top: 26px;
     background-image: url(../../src/images/filter_inactive.png);
+    background-repeat: no-repeat;
+    background-position: top center;
     background-size: 26px;
     appearance: none;
     border: 0;

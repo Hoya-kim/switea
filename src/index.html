@@ -8,12 +8,13 @@
   </head>
   <body>
     <div class="container home">
-      <h1 class="logo">
+      <h1 class="logo a11yHidden">
         <a href="#">Switea</a>
       </h1>
       <nav-component></nav-component>
-      <main class="home" class="opacity-0">
-        <h2 class="slogan">스위티에서 스터디 메이트를 찾아보세요.👀</h2>
+      <main class="home opacity-0">
+        <h2 class="home__slogan">스위티에서 스터디 메이트를 찾아보세요 👀</h2>
+        <p class="home__study-now">지금! 가장 가까운 스터디</p>
         <ul class="study-list">
           <!-- 카드 동적 생성 -->
           <li class="study-list__card">
@@ -38,29 +39,10 @@
               </div>
             </a>
           </li>
-          <li class="study-list__card">
-            <a href="#">
-              <div class="study-list__profile-image"></div>
-              <div class="study-list__contents-container">
-                <p class="study-list__subject">
-                  자바스크립트 스터디 모집해요!자바스크립트 스터디
-                  모집해요!자바스크립트 스터디 모집해요!자바스크립트 스터디
-                  모집해요!자바스크립트 스터디 모집해요!자바스크립트 스터디
-                  모집해요!자바스크립트 스터디 모집해요!자바스크립트 스터디
-                  모집해요!자바스크립트 스터디 모집해요!자바스크립트 스터디
-                  모집해요!자바스크립트 스터디 모집해요!
-                </p>
-                <span class="study-list__name">민횽이</span>
-                <span class="study-list__date">11월 10일 - 11월 13일</span>
-                <ul class="study-list__tags tags">
-                  <li class="tag location">#강남</li>
-                  <li class="tag">#파이썬</li>
-                  <li class="tag">#코딩</li>
-                </ul>
-              </div>
-            </a>
-          </li>
         </ul>
+        <p class="home__study-more">
+          <a href="./list.html">더 많은 스터디 보러 가기</a>
+        </p>
       </main>
     </div>
   </body>
