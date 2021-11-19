@@ -3,7 +3,7 @@
 
 .container.home {
   background-color: $secondary;
-  padding-top: 18px;
+  padding-top: 50px;
 }
 
 .logo {
@@ -20,6 +20,10 @@
 }
 
 .home {
+  object {
+    transform: translateY(25px);
+  }
+
   &__slogan {
     width: 250px;
     font-size: 35px;
@@ -27,7 +31,7 @@
     line-height: 50px;
     word-break: keep-all;
     color: $dark-gray2;
-    margin: 60px 0;
+    margin: 50px 0;
   }
 
   &__study-now {
@@ -52,15 +56,16 @@
     margin-top: 15px;
   }
 
-  &__study-more {
-    font-size: 16px;
-    color: $white;
-    text-align: center;
+  &__study-now {
+    font-size: 20px;
+    color: $dark-gray2;
+    font-weight: bold;
   }
 
   &__study-more {
-    font-size: 16px;
+    font-size: 25px;
     color: $white;
     text-align: center;
+    font-weight: bold;
   }
 }

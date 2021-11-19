@@ -9,7 +9,7 @@
     margin: 26px 0;
     padding: 13px;
     background-color: $white;
-    @include boxShadow();
+    @include boxShadowFloated();
     a {
       display: flex;
     }
@@ -22,6 +22,8 @@
     background-repeat: no-repeat;
     flex-shrink: 0;
     border-radius: 50%;
+    background-position: center;
+    background-size: cover;
   }
   &__name {
     width: 100%;
