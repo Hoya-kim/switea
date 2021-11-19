@@ -31,39 +31,42 @@ const getMyArticle = uid =>
     .then(snapshot => snapshot.val());
 
 // 내가 쓴 모집글 render
-const renderStudyList = studylist => {
+const renderStudyList = studyListData => {
   const $studyList = document.querySelector('.study-list');
   let studyListHTML = '';
 
-  $articleCount.textContent = `내가 쓴 모집글 ${studylist.length}개`;
+  $articleCount.textContent = `내가 쓴 모집글 ${studyListData.length}개`;
+  studyListData.forEach(([studyId, study]) => {
+    const { startDate, endDate, location, tags, title, nickname } = study;
 
-  studylist.forEach(studyData => {
-    const startDate = new Date(studyData.startDate);
-    const endDate = new Date(studyData.endDate);
-
-    const locationTagHTML = studyData.location
-      ? `<li class="tag location">#${studyData.location.placeName}</li>`
+    const locationTagHTML = location
+      ? `<li class="tag location">#${location.placeName}</li>`
       : '';
 
-    const tagsHTML = studyData.tags
-      ? studyData.tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
+    const tagsHTML = tags
+      ? tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
       : '';
 
     studyListHTML += `
-      <li class="study-list__card">
-        <a href="#">
-          <p class="study-list__profile-image" style="background-image: url(${profileImage})"></p>
-          <div class="study-list__contents-container">
-            <p class="study-list__subject">${studyData.title}</p>
-            <span class="study-list__name">${studyData.nickName}</span>
-            <span class="study-list__date">${startDate.getMonth()}월 ${startDate.getDate()}일 - ${endDate.getMonth()}월 ${endDate.getDate()}일</span>
-            <ul class="study-list__tags tags">
-              ${locationTagHTML}${tagsHTML}
-            </ul>
-          </div>
-        </a>
-      </li>`;
+    <li class="study-list__card">
+      <a href="/view.html?id=${studyId}">
+      <p class="study-list__profile-image" style="background-image: url(${profileImage})"></p>        
+      <div class="study-list__contents-container">
+          <p class="study-list__subject">${title}</p>
+          <span class="study-list__name">${nickname}</span>
+          <span class="study-list__date">${
+            new Date(startDate).getMonth() + 1
+          }월 ${new Date(startDate).getDate()}일 - ${
+      new Date(endDate).getMonth() + 1
+    }월 ${new Date(endDate).getDate()}일</span>
+          <ul class="study-list__tags tags">
+            ${locationTagHTML}${tagsHTML}
+          </ul>
+        </div>
+      </a>
+    </li>`;
   });
+
   $studyList.innerHTML = studyListHTML;
 };
 
@@ -81,11 +84,10 @@ window.addEventListener(
     document
       .querySelector('.myarticle-container')
       .classList.toggle('none', !studies);
-
     // 작성한 모집글이 없는 경우
     !studies
       ? ($articleCount.innerHTML = `작성한 모집글이 없습니다. <br>첫 번째 모집글을 작성해보세요🙂`)
-      : renderStudyList(Object.values(studies));
+      : renderStudyList(Object.entries(studies));
     setTimeout(spinner.removeOnView, 500);
   }),
 );
