@@ -312,3 +312,6 @@ $RECYCLE.BIN/
 *.lnk
 
 package-lock.json
+
+# Build files
+public/
