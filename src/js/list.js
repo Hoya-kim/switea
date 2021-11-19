@@ -53,7 +53,7 @@ const renderStudyList = studyListData => {
       nickname,
     } = study;
 
-    profileImageUrls = [...profileImageUrls, profileImage];
+    profileImageUrls = [profileImage, ...profileImageUrls];
 
     const locationTagHTML = location
       ? `<li class="tag location">#${location.placeName}</li>`
@@ -63,7 +63,8 @@ const renderStudyList = studyListData => {
       ? tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
       : '';
 
-    studyListHTML += `
+    studyListHTML =
+      `
     <li class="study-list__card">
       <a href="/view.html?id=${studyId}">
         <div class="study-list__profile-image"></div>
@@ -73,14 +74,14 @@ const renderStudyList = studyListData => {
           <span class="study-list__date">${
             new Date(startDate).getMonth() + 1
           }월 ${new Date(startDate).getDate()}일 - ${
-      new Date(endDate).getMonth() + 1
-    }월 ${new Date(endDate).getDate()}일</span>
+        new Date(endDate).getMonth() + 1
+      }월 ${new Date(endDate).getDate()}일</span>
           <ul class="study-list__tags tags">
             ${locationTagHTML}${tagsHTML}
           </ul>
         </div>
       </a>
-    </li>`;
+    </li>` + studyListHTML;
   });
 
   $studyList.innerHTML = studyListHTML;

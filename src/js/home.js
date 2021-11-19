@@ -19,32 +19,25 @@ const database = getDatabase(app);
 const studyList = ref(database, 'studies/');
 
 let totalStudyListData = {};
-// let profileImage = '';
 
 const renderStudyList = studyListData => {
   const $studyList = document.querySelector('.study-list');
   let studyListHTML = '';
 
-  studyListData.forEach(([studyId, study]) => {
-    const {
-      startDate,
-      endDate,
-      profileImage,
-      location,
-      tags,
-      title,
-      nickname,
-    } = study;
+  const [
+    studyId,
+    { startDate, endDate, profileImage, location, tags, title, nickname },
+  ] = studyListData[studyListData.length - 1];
 
-    const locationTagHTML = location
-      ? `<li class="tag location">#${location.placeName}</li>`
-      : '';
+  const locationTagHTML = location
+    ? `<li class="tag location">#${location.placeName}</li>`
+    : '';
 
-    const tagsHTML = tags
-      ? tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
-      : '';
+  const tagsHTML = tags
+    ? tags.map(tag => `<li class="tag">#${tag}</li>`).join('')
+    : '';
 
-    studyListHTML = `
+  studyListHTML = `
     <li class="study-list__card">
       <a href="/view.html?id=${studyId}">
         <div class="study-list__profile-image"></div>
@@ -54,26 +47,21 @@ const renderStudyList = studyListData => {
           <span class="study-list__date">${
             new Date(startDate).getMonth() + 1
           }월 ${new Date(startDate).getDate()}일 - ${
-      new Date(endDate).getMonth() + 1
-    }월 ${new Date(endDate).getDate()}일</span>
+    new Date(endDate).getMonth() + 1
+  }월 ${new Date(endDate).getDate()}일</span>
           <ul class="study-list__tags tags">
             ${locationTagHTML}${tagsHTML}
           </ul>
         </div>
       </a>
     </li>`;
-  });
 
   $studyList.innerHTML = studyListHTML;
 
-  $studyList.children[0].querySelector(
+  $studyList.querySelector(
     '.study-list__profile-image',
   ).style.backgroundImage = `url(${profileImage})`;
 };
-
-// const sortByDistance = studyList => {
-
-// }
 
 window.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
@@ -89,19 +77,13 @@ window.addEventListener('DOMContentLoaded', () => {
   }, 1000);
 });
 
+// 추후 위치 기준으로 정렬하기 위한 함수
 (async () => {
   const { latitude, longitude } = await getGeoLocation();
-
-  console.log(await getGeoLocation());
-  console.log(latitude, longitude);
-
-  spinner.removeOnView();
 })();
 
 // 데이터 업데이트될 때 이벤트 발생
 onValue(studyList, snapshot => {
   totalStudyListData = Object.entries(snapshot.val());
   renderStudyList(totalStudyListData);
-  // spinner.removeOnView;
-  // setTimeout(spinner.removeOnView, 500);
 });
