@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   // entry file
@@ -31,7 +32,8 @@ module.exports = {
         test: /\.s[ac]ss$/i,
         include: [path.resolve(__dirname, 'src/scss')],
         exclude: /node_modules/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        // use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [MiniCSSExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.js$/,
@@ -112,7 +114,10 @@ module.exports = {
       template: 'src/pages/myarticle.html',
       chunks: ['app', 'myarticle'],
     }),
-    // new MiniCssExtractPlugin({ filename: 'css/style.css' }),
+    new MiniCSSExtractPlugin({
+      linkType: false,
+      filename: 'css/style.css',
+    }),
     new CopyPlugin({
       patterns: [
         {
