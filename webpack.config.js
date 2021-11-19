@@ -1,9 +1,13 @@
+require('dotenv').config();
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 module.exports = {
+  mode: isDevelopment ? 'development' : 'production',
   // entry file
   // https://webpack.js.org/configuration/entry-context/#entry
   entry: {
@@ -33,7 +37,11 @@ module.exports = {
         include: [path.resolve(__dirname, 'src/scss')],
         exclude: /node_modules/,
         // use: ['style-loader', 'css-loader', 'sass-loader'],
-        use: [MiniCSSExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [
+          isDevelopment ? 'style-loader' : MiniCSSExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.js$/,
