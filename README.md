@@ -1,5 +1,7 @@
 # switea
 
+<img width="300" alt="logo" src="./src/images/WelcomeSwitea.svg">
+
 사용자의 위치를 기반으로 스터디 메이트를 찾을 수 있는 서비스 개발
 
 ## 기획 의도
