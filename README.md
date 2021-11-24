@@ -1,8 +1,6 @@
 # switea
 
-Study With Team - Study group recruiting application
-
-- 사용자의 위치를 기반으로 스터디 메이트를 찾을 수 있는 서비스 개발
+사용자의 위치를 기반으로 스터디 메이트를 찾을 수 있는 서비스 개발
 
 ## 기획 의도
 
@@ -21,7 +19,11 @@ Study With Team - Study group recruiting application
 
 ## Team Collaboration - Daily Routine
 
+<img width="500" alt="daily_routine" src="https://user-images.githubusercontent.com/42148741/143194261-1b449bf9-fccb-4e48-a2a4-f1d1d5e9ac19.jpeg">
+
 ## 배포 URL
+
+<img width="300" alt="switea_QR2" src="https://user-images.githubusercontent.com/42148741/143193577-82804372-9ef1-4a1c-84f0-b770cc0cd3ac.png">
 
 ## 프로젝트 사용 기술
 
@@ -38,7 +40,6 @@ Study With Team - Study group recruiting application
 |                                                      클러스터링                                                      |                                                      지도 검색                                                      |                                                        현재 위치                                                         |
 | :------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------: |
 | ![클러스터링](https://user-images.githubusercontent.com/41777022/143190944-9305a493-f6a0-49ed-af07-b5e6d17acdd6.gif) | ![지도 검색](https://user-images.githubusercontent.com/41777022/143190976-b7eb057e-c34a-4ee9-b1e3-e3dba4d1b65c.gif) | ![현재 위치 이동](https://user-images.githubusercontent.com/41777022/143190983-475b1d4b-de7d-4765-9d25-cc69c600c838.gif) |
-|  |
 
 ### 스터디 모집하기 기능
 
