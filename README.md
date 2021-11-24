@@ -29,6 +29,9 @@
 
 ## 프로젝트 사용 기술
 
+![image](https://user-images.githubusercontent.com/42148741/143199490-decec3bf-a290-4103-8755-c35cde28cba6.png)
+
+
 ## Main Feature
 
 ### 회원 관리 기능
