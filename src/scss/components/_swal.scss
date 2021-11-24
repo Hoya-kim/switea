@@ -1,0 +1,23 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+// change error icon color
+.swal2-icon.swal2-error {
+  border-color: $coral !important;
+}
+
+.swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+  background-color: $coral !important;
+}
+
+.swal2-styled.swal2-confirm {
+  background-color: $primary !important;
+}
+
+.swal2-styled.swal2-confirm:focus {
+  box-shadow: 0 0 0 3px rgba($primary, 0.5) !important;
+}
+
+.swal2-height-auto {
+  padding-right: 0 !important;
+}

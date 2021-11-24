@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Switea</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="logo a11y-hidden">
+        <a href="#">Switea</a>
+      </h1>
+      <header class="header opacity-0">
+        <h2 class="title">로그인</h2>
+        <button type="button" class="back">뒤로 가기</button>
+      </header>
+      <nav-component></nav-component>
+      <main class="signin-container opacity-0">
+        <form>
+          <fieldset>
+            <legend>로그인</legend>
+            <div class="input-container email">
+              <label for="signinEmail">이메일</label>
+              <input
+                type="email"
+                name="email"
+                id="signinEmail"
+                placeholder="switea@gmail.com"
+                aria-required="true"
+              />
+              <span class="error"></span>
+            </div>
+            <div class="input-container">
+              <label for="signinPassword">비밀번호</label>
+              <input
+                type="password"
+                id="signinPassword"
+                name="password"
+                aria-required="true"
+              />
+              <span class="error"></span>
+            </div>
+            <button class="signin-submit button-submit" disabled>로그인</button>
+          </fieldset>
+        </form>
+        <ul class="menu-container">
+          <li><a href="/" class="id-find">아이디찾기</a></li>
+          <li>
+            <span class="divider" aria-hidden="true">ㅣ</span
+            ><a href="/" class="password-find">비밀번호 찾기</a>
+          </li>
+          <li>
+            <span class="divider" aria-hidden="true">ㅣ</span
+            ><a href="./signup.html" class="signup">회원가입</a>
+          </li>
+        </ul>
+      </main>
+      <div class="spinner">
+        <object type="image/svg+xml" data="../images/spinner_switea.svg">
+          <img src="../images/spinner_switea.svg" />
+        </object>
+      </div>
+    </div>
+  </body>
+</html>

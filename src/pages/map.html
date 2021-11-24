@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=07774a7ff53cd7dcf7fe4d664656946e&libraries=services,clusterer"
+    ></script>
+    <title>Switea</title>
+  </head>
+  <body>
+    <div class="container map-container">
+      <h1 class="logo a11yHidden">
+        <a href="#">Switea</a>
+      </h1>
+      <nav-component></nav-component>
+      <main id="map" class="opacity-0">
+        <form>
+          <fieldset>
+            <legend>스터디 검색 폼</legend>
+            <div class="search">
+              <div class="search__input-container">
+                <label for="searchInput">검색</label>
+                <input
+                  type="search"
+                  id="searchInput"
+                  name="keyword"
+                  aria-required="true"
+                  placeholder="위치를 입력하세요."
+                />
+              </div>
+              <div class="toggle-button-container">
+                <input
+                  type="radio"
+                  id="searchTypeStudy"
+                  name="search-type"
+                  value="스터디"
+                  checked
+                />
+                <label for="searchTypeStudy">스터디</label>
+                <input
+                  type="radio"
+                  id="searchTypePlace"
+                  name="search-type"
+                  value="장소"
+                />
+                <label for="searchTypePlace">장소</label>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+        <div class="location-button-container">
+          <button type="button" class="location-button">
+            현재 위치로 이동
+          </button>
+        </div>
+        <ul class="studyInfo-container"></ul>
+      </main>
+      <div class="spinner">
+        <object type="image/svg+xml" data="../images/spinner_switea.svg">
+          <img src="../images/spinner_switea.svg" />
+        </object>
+      </div>
+    </div>
+  </body>
+</html>

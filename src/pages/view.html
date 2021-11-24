@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Switea</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="logo a11yHidden">
+        <a href="#">Switea</a>
+      </h1>
+      <header class="header opacity-0">
+        <h2 class="title">모집글 보기</h2>
+        <button type="button" class="back">뒤로 가기</button>
+      </header>
+      <nav-component></nav-component>
+      <main class="view-container opacity-0">
+        <h3 class="view__title"></h3>
+        <ul class="tags">
+          <!-- <li class="tag location">#강남</li>
+          <li class="tag">#javascript</li> -->
+        </ul>
+        <table class="view__info">
+          <colgroup>
+            <col style="width: 110px" />
+            <col />
+          </colgroup>
+          <tbody>
+            <tr>
+              <th>스터디 유형</th>
+              <td class="view__type"></td>
+            </tr>
+            <tr>
+              <th>일자</th>
+              <td class="view__date"></td>
+            </tr>
+            <tr>
+              <th>모집인원</th>
+              <td class="view__capacity"></td>
+            </tr>
+            <tr>
+              <th>연락처</th>
+              <td class="view__contact"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="view__contents"></div>
+        <a href="./list.html" class="button-submit">목록으로 돌아가기</a>
+      </main>
+      <div class="spinner">
+        <object type="image/svg+xml" data="../images/spinner_switea.svg">
+          <img src="../images/spinner_switea.svg" />
+        </object>
+      </div>
+    </div>
+  </body>
+</html>

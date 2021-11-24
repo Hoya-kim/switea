@@ -1,0 +1,52 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+.study-list {
+  &__card {
+    width: 100%;
+    min-height: 100px;
+    border-radius: 5px;
+    margin: 26px 0;
+    padding: 13px;
+    background-color: $white;
+    @include boxShadowFloated();
+    a {
+      display: flex;
+    }
+  }
+  &__profile-image {
+    width: 76px;
+    height: 76px;
+    background-image: url(../../src/images/profile/user1_profile.png);
+    background-size: 76px;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+  }
+  &__name {
+    width: 100%;
+    margin-top: 3px;
+    font-size: 16px;
+    color: $gray1;
+  }
+  &__name::after {
+    content: ' | ';
+    color: $gray1;
+  }
+  &__date {
+    font-size: 16px;
+    color: $gray1;
+  }
+  &__contents-container {
+    position: relative;
+    width: 100%;
+    min-height: 104px;
+    margin-left: 13px;
+  }
+  &__subject {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+}

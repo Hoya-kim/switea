@@ -1,0 +1,166 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+.input-container {
+  position: relative;
+  & + .input-container {
+    margin-top: 33px;
+  }
+
+  &__comment {
+    position: absolute;
+    top: 100%;
+    margin-top: 6px;
+    font-size: 14px;
+    display: block;
+    color: red;
+  }
+
+  &__label {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 9px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  input:not([type='radio']) {
+    width: 100%;
+    padding: 9px;
+    height: 54px;
+    border: none;
+    border-bottom: 1px solid $border;
+    border-radius: 0;
+  }
+
+  input.input--border {
+    border: 1px solid $border;
+    border-radius: 5px;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 9px;
+    resize: none;
+  }
+
+  input.datepicker {
+    padding-left: 62px;
+    background: url('../images/recruit_calendar.png') no-repeat;
+    background-position: 16px center;
+    background-size: 30px;
+  }
+
+  input.location {
+    padding-left: 62px;
+    background: url('../images/search_symbol.png') no-repeat;
+    background-position: 16px center;
+    background-size: 26px;
+    outline-offset: 0;
+  }
+
+  &.capacity {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+    .divider {
+      font-size: 18px;
+    }
+  }
+
+  .capacity__box {
+    width: 47%;
+    display: flex;
+    align-items: center;
+    border: 1px solid $border;
+    border-radius: 5px;
+    overflow: hidden;
+    padding-right: 10px;
+
+    input {
+      height: 59px;
+      border: none;
+      margin-right: 10px;
+    }
+  }
+}
+
+input::placeholder {
+  font-weight: 300;
+}
+
+// flatpickr custom style
+.flatpickr-weekdays {
+  height: 32px;
+}
+
+.flatpickr-months .flatpickr-month,
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-weekdays,
+span.flatpickr-weekday {
+  background-color: $primary;
+  color: $white;
+}
+
+.flatpickr-months .flatpickr-prev-month svg,
+.flatpickr-months .flatpickr-next-month svg {
+  fill: $white;
+}
+
+.flatpickr-months .flatpickr-prev-month:hover svg,
+.flatpickr-months .flatpickr-next-month:hover svg {
+  fill: $dark-mint;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected.inRange,
+.flatpickr-day.startRange.inRange,
+.flatpickr-day.endRange.inRange,
+.flatpickr-day.selected:focus,
+.flatpickr-day.startRange:focus,
+.flatpickr-day.endRange:focus,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover,
+.flatpickr-day.selected.prevMonthDay,
+.flatpickr-day.startRange.prevMonthDay,
+.flatpickr-day.endRange.prevMonthDay,
+.flatpickr-day.selected.nextMonthDay,
+.flatpickr-day.startRange.nextMonthDay,
+.flatpickr-day.endRange.nextMonthDay {
+  background-color: $primary;
+  border-color: $primary;
+}
+
+.flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
+.flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
+.flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
+  -webkit-box-shadow: -10px 0 0 $primary;
+  box-shadow: -10px 0 0 $primary;
+}
+
+.flatpickr-current-month
+  .flatpickr-monthDropdown-months
+  .flatpickr-monthDropdown-month {
+  background-color: $primary;
+}
+
+.flatpickr-monthDropdown-months {
+  min-width: 70px;
+}
+
+.flatpickr-current-month .numInputWrapper {
+  margin-left: 12px;
+}

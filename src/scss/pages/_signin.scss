@@ -1,0 +1,44 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+.signin-container {
+  .button-submit {
+    margin-top: 48px;
+  }
+
+  .input-container {
+    margin-top: 35px;
+
+    .error {
+      position: absolute;
+      top: 100%;
+      margin-top: 10px;
+      left: 7px;
+      font-size: 14px;
+      color: $coral;
+    }
+  }
+
+  .menu-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    .divider {
+      color: $black2;
+      border: 2px;
+      margin-right: 3px;
+      margin-left: 3px;
+    }
+
+    a {
+      color: $black2;
+      font-weight: 400;
+      font-size: 16px;
+    }
+  }
+
+  .email {
+    margin-top: 10px;
+  }
+}

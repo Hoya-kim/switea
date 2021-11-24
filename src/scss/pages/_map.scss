@@ -1,0 +1,158 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+.container.map-container {
+  // init padding
+  padding: 0;
+}
+
+#map {
+  position: relative;
+  height: calc(100vh - 74px);
+
+  .search__input-container:focus-within > input {
+    outline-offset: 5px;
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: $primary;
+  }
+
+  .toggle-button-container {
+    width: 25%;
+    min-width: 130px;
+  }
+
+  input {
+    outline: none;
+  }
+
+  form {
+    position: absolute;
+    width: calc(100% - 36px);
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 768px;
+    background-color: $white;
+    z-index: 10;
+    border-radius: 5px;
+    @include boxShadowFloated;
+  }
+
+  .location-button {
+    width: 34px;
+    padding-top: 34px;
+    background-image: url(../images/geo_location_icon.png);
+    background-repeat: no-repeat;
+    background-position-x: 4px;
+    background-position-y: 4px;
+    background-size: 26px;
+    appearance: none;
+    border: 0;
+    background-color: transparent;
+
+    &-container {
+      position: absolute;
+      top: 100px;
+      right: 18px;
+      height: 34px;
+      overflow: hidden;
+      background: $white;
+      z-index: 10;
+      border: 1px solid $border;
+      border-radius: 5px;
+      @include boxShadowFloated;
+    }
+  }
+
+  .studyInfo-container {
+    list-style: none;
+    position: absolute;
+    width: 100%;
+    max-width: 768px;
+    bottom: 0;
+    z-index: 999;
+    border-radius: 30px 30px 0 0;
+    background-color: transparent;
+
+    .study-list__card {
+      width: calc(100% - 36px);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tags {
+      margin-top: 10px;
+    }
+  }
+
+  .multiple {
+    background-color: $white;
+    border-bottom: 1px solid rgba($border, 0.8);
+    box-shadow: 0px -2px 6px rgba(0, 0, 0, 0.15);
+    max-height: 250px;
+    overflow-y: auto;
+  }
+}
+
+// Kakao api 동적 추가 class
+.kakaoMap {
+  width: 100%;
+  height: 100%;
+}
+
+.marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
+.pulse {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 5px solid $mint2;
+  border-radius: 30px;
+  background-color: $mint1;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+}
+
+.dot {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  top: -25px;
+  left: -25px;
+  z-index: 2;
+  opacity: 0;
+  border: 10px solid $dark-mint;
+  background: transparent;
+  border-radius: 60px;
+  animation: flash 2s ease-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes flash {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(0.1);
+    opacity: 0.5;
+  }
+  75% {
+    transform: scale(0.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,39 @@
+//  기본 색상 --------------------------------------------------------- /
+$white: #ffffff;
+$black1: #000000;
+$black2: #383838;
+$dark-gray1: #222222;
+$dark-gray2: #5f5f5f;
+$gray1: #b1b1b1;
+$gray2: #9c9c9c;
+$gray3: #e0e0e0;
+$gray4: #efefef;
+$gray5: #c2c9de;
+$light-gray: #d4d4d4;
+$mint1: #5cc6ba;
+$mint2: #b8e2de;
+$dark-green: #355e5d;
+$dark-mint: #569f9d;
+$blue: #8fb4cf;
+$yellow: #fdf2d0;
+$mintgray: #f0f4f3;
+$coral: #f7846b;
+$red: #e50000;
+$green: #3fa586;
+
+$primary: $mint1;
+$secondary: $mint2;
+$highlight: $coral;
+$background: $white;
+$text: $dark-gray1;
+$label-text: $black2;
+$content-text: $black2;
+$back-arrow: $black1;
+$horizontal-line: $gray3;
+$border: $gray2;
+$toggle-button: $gray4;
+$error-message: $red;
+$valid-message: $green;
+
+$button-active: $primary;
+$button-inactive: $secondary;

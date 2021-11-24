@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=07774a7ff53cd7dcf7fe4d664656946e&libraries=services,clusterer"
+    ></script>
+    <title>Switea</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="logo a11yHidden">
+        <a href="#">Switea</a>
+      </h1>
+      <header class="header opacity-0">
+        <h2 class="title">스터디 모집하기</h2>
+        <button type="button" class="back">뒤로 가기</button>
+      </header>
+      <nav-component></nav-component>
+      <main class="recruit-container opacity-0">
+        <form>
+          <fieldset>
+            <legend>모집하기 등록 폼</legend>
+            <div class="input-container">
+              <label for="title" class="a11yHidden">제목</label>
+              <input
+                type="text"
+                name="title"
+                id="title"
+                aria-required="true"
+                placeholder="제목을 입력해주세요"
+              />
+            </div>
+            <div class="input-container">
+              <p class="input-container__label">스터디 유형</p>
+              <div class="toggle-button-container">
+                <input
+                  type="radio"
+                  id="typeRegular"
+                  name="type"
+                  value="regular"
+                  checked
+                />
+                <label for="typeRegular">정기스터디</label>
+                <input
+                  type="radio"
+                  id="typeIrregular"
+                  name="type"
+                  value="irregular"
+                />
+                <label for="typeIrregular">일시스터디</label>
+              </div>
+            </div>
+            <div class="input-container">
+              <label for="studyTags">스터디 태그</label>
+              <input
+                type="text"
+                id="studyTags"
+                placeholder="추가할 태그를 입력해주세요."
+                maxlength="10"
+                class="add-tags"
+              />
+              <ul class="tags">
+                <!-- <li class="tag">
+                  #javascript
+                  <button class="tag-delete">X</button>
+                </li> -->
+              </ul>
+            </div>
+            <div class="input-container">
+              <label for="location">스터디 장소 검색</label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                aria-required="true"
+                class="location input--border"
+                readonly
+              />
+            </div>
+            <div class="input-container">
+              <label for="date">일자</label>
+              <input
+                type="text"
+                id="date"
+                name="date"
+                class="datepicker input--border"
+                aria-required="true"
+                readonly
+              />
+            </div>
+            <div class="input-container capacity">
+              <p class="input-container__label">모집 인원</p>
+              <span class="capacity__box">
+                <label for="minCapacity" class="a11yHidden">최소 인원</label>
+                <input
+                  type="number"
+                  id="minCapacity"
+                  name="minCapacity"
+                  min="1"
+                  placeholder="최소"
+                  pattern="\d*"
+                />
+                명
+              </span>
+              <span class="divider">~</span>
+              <span class="capacity__box">
+                <label for="maxCapacity" class="a11yHidden">최대 인원</label>
+                <input
+                  type="number"
+                  id="maxCapacity"
+                  name="maxCapacity"
+                  min="1"
+                  placeholder="최대"
+                  pattern="\d*"
+                />
+                명
+              </span>
+            </div>
+            <div class="input-container">
+              <label for="contact">연락 수단</label>
+              <input
+                type="text"
+                id="contact"
+                name="contact"
+                class="input--border"
+                placeholder="ex) https://open.kakao.com, 010-0000-0000"
+              />
+            </div>
+            <div class="input-container">
+              <label for="content">스터디 내용</label>
+              <textarea
+                name="content"
+                id="content"
+                class="input--border"
+              ></textarea>
+            </div>
+            <button class="recruit__submit button-submit">등록하기</button>
+          </fieldset>
+        </form>
+
+        <!-- 검색 결과 모달 -->
+        <div class="location-modal__wrap">
+          <div class="location-modal__bg"></div>
+          <div class="location-modal__contents">
+            <!-- <h3 class="location-modal__title">장소 검색 결과</h3> -->
+            <div class="input-container">
+              <label for="modalSearch">스터디 장소 검색</label>
+              <input
+                type="search"
+                id="modalSearch"
+                class="location input--border"
+              />
+            </div>
+            <ul class="location-modal__search-list">
+              <!-- <li class="no-result">검색 결과가 없습니다.</li>
+              <li class="location-modal__search-list--item">
+                <p class="place-name">강남역</p>
+                <p class="road-address-name">
+                  서울특별시 강남구 역삼동 858-4번지
+                </p>
+              </li>
+              <li class="location-modal__search-list--item">
+                <p class="place-name">강남역</p>
+                <p class="road-address-name">
+                  서울특별시 강남구 역삼동 858-4번지
+                </p>
+              </li> -->
+            </ul>
+            <button type="button" class="location-modal--close">닫기</button>
+          </div>
+        </div>
+      </main>
+      <div class="spinner">
+        <object type="image/svg+xml" data="../images/spinner_switea.svg">
+          <img src="../images/spinner_switea.svg" />
+        </object>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+@forward './common';
+@forward './button';
+@forward './card-list';
+@forward './form';
+@forward './navigation';
+@forward './profile';
+@forward './search';
+@forward './common'; //왜 두번?
+@forward './swal';

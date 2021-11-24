@@ -1,0 +1,98 @@
+@use '../base/' as *;
+@use '../utils/' as *;
+
+.signup-container {
+  .hidden {
+    display: none !important;
+  }
+
+  .button-submit {
+    margin-top: 38px;
+  }
+
+  .profile-image {
+    &__container {
+      position: relative;
+      width: 140px;
+      margin: 0 auto;
+    }
+
+    &__stroke {
+      width: 140px;
+      height: 140px;
+      border-radius: 70%;
+      overflow: hidden;
+    }
+
+    &__view {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &__upload {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      z-index: 10;
+      top: 60%;
+      right: 0;
+    }
+  }
+
+  .input-container {
+    margin-top: 35px;
+
+    .check-email-duplication {
+      position: absolute;
+      right: 0;
+      background: $primary;
+      border: none;
+      padding: 7px 10px;
+      color: white;
+      border-radius: 50px;
+      font-size: 12px;
+      margin-bottom: 9px;
+      line-height: 1;
+
+      &:disabled {
+        background-color: $button-inactive;
+      }
+    }
+
+    .icon {
+      width: 28px;
+      height: 28px;
+      position: absolute;
+      top: 45px;
+      right: 7px;
+      font-size: 24px;
+      pointer-events: none;
+
+      &.icon-success {
+        color: $primary;
+      }
+
+      &.icon-error {
+        color: $coral;
+      }
+    }
+
+    .error {
+      position: absolute;
+      top: 100%;
+      margin-top: 10px;
+      left: 7px;
+      font-size: 12px;
+      color: $coral;
+
+      &.pass {
+        color: $valid-message;
+      }
+    }
+  }
+
+  .profileImage {
+    margin-top: 10px;
+  }
+}
